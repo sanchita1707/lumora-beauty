@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUMORA BEAUTY | Luxury Cosmetics & Skincare</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description"
+    content="Indulge in premium cosmetics, skincare, haircare, and fragrances from LUMORA BEAUTY. Elevate your self-care ritual with Rose Gold luxury.">
+  <meta name="keywords"
+    content="cosmetics, luxury beauty, skincare, makeup, Sephora, Nykaa, fragrances, bath and body, Lumora Beauty">
+
+  <!-- FontAwesome & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- --- HEADER NAVIGATION --- -->
+  <header>
+    <div class="header-container">
+      <!-- Logo -->
+      <a href="index.html" class="logo" id="header-logo">
+        LUMORA <span>BEAUTY</span>
+      </a>
+
+      <!-- Nav Links -->
+      <nav class="nav-links">
+        <a href="index.html" class="active">Home</a>
+        <a href="shop.html">Shop All</a>
+        <a href="shop.html?category=makeup">Makeup</a>
+        <a href="shop.html?category=skincare">Skincare</a>
+        <a href="shop.html?category=fragrance">Fragrance</a>
+      </nav>
+
+      <!-- Action Icons -->
+      <div class="nav-actions">
+        <a href="shop.html" class="action-icon" title="Search"><i class="fas fa-search"></i></a>
+        <a href="wishlist.html" class="action-icon" title="Wishlist">
+          <i class="far fa-heart"></i>
+          <span class="badge-count wishlist-badge-count">0</span>
+        </a>
+        <a href="#" class="action-icon" id="header-cart-icon" title="Shopping Bag">
+          <i class="fas fa-shopping-bag"></i>
+          <span class="badge-count cart-badge-count">0</span>
+        </a>
+        <a href="auth.html" class="action-icon" id="header-user-link" title="My Account"><i class="far fa-user"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- --- HERO SLIDER --- -->
+  <section class="hero-slider" id="hero-slider">
+    <!-- Slide 1 -->
+    <div class="slide active">
+      <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?q=80&w=1800&auto=format&fit=crop"
+        class="slide-img" alt="Luxury Makeup Collection">
+      <div class="slide-content">
+        <h4 class="slide-subtitle">The Art of Elegance</h4>
+        <h1 class="slide-title">Unveil Your Glow</h1>
+        <p class="slide-desc">Indulge in rich pigments, velvety textures, and gold detailing crafted for the modern
+          queen.</p>
+        <a href="shop.html?category=makeup" class="btn btn-gold slide-btn">Explore Makeup</a>
+      </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide">
+      <img src="https://images.unsplash.com/photo-1608248597481-496100c80836?q=80&w=1800&auto=format&fit=crop"
+        class="slide-img" alt="Botanical Skincare Series">
+      <div class="slide-content">
+        <h4 class="slide-subtitle">Pure Botanical Science</h4>
+        <h1 class="slide-title">24K Gold Youth Elixir</h1>
+        <p class="slide-desc">Reveal luminous, youthful skin with active hyaluronic boosters and botanical extracts.</p>
+        <a href="shop.html?category=skincare" class="btn btn-gold slide-btn">Discover Skincare</a>
+      </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide">
+      <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?q=80&w=1800&auto=format&fit=crop"
+        class="slide-img" alt="Premium Fragrance Scents">
+      <div class="slide-content">
+        <h4 class="slide-subtitle">Sartorial Scents</h4>
+        <h1 class="slide-title">Majestic Amber</h1>
+        <p class="slide-desc">Earthy Cambodian patchouli, sweet vanilla, and rich amber blended in glass art bottles.
+        </p>
+        <a href="shop.html?category=fragrance" class="btn btn-gold slide-btn">Shop Fragrances</a>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="slider-controls">
+      <div class="slider-arrow" id="prev-slide"><i class="fas fa-chevron-left"></i></div>
+      <div class="slider-arrow" id="next-slide"><i class="fas fa-chevron-right"></i></div>
+    </div>
+  </section>
+
+  <!-- --- CATEGORIES CAROUSEL/GRID --- -->
+  <section class="categories-section">
+    <h2 class="section-title">Shop by Category</h2>
+    <div class="categories-grid">
+      <!-- Makeup -->
+      <a href="shop.html?category=makeup" class="category-card">
+        <img src="/images/categories/makeup.jpg" class="category-img" alt="Makeup Category">
+        <div class="category-overlay"></div>
+        <h3 class="category-name">Makeup</h3>
+      </a>
+      <!-- Skincare -->
+      <a href="shop.html?category=skincare" class="category-card">
+        <img src="/images/categories/skincare.jpg" class="category-img" alt="Skincare Category">
+        <div class="category-overlay"></div>
+        <h3 class="category-name">Skincare</h3>
+      </a>
+      <!-- Haircare -->
+      <a href="shop.html?category=haircare" class="category-card">
+        <img src="/images/categories/haircare.jpg" class="category-img" alt="Haircare Category">
+        <div class="category-overlay"></div>
+        <h3 class="category-name">Haircare</h3>
+      </a>
+      <!-- Fragrance -->
+      <a href="shop.html?category=fragrance" class="category-card">
+        <img src="/images/categories/fragrance.jpg" class="category-img" alt="Fragrance Category">
+        <div class="category-overlay"></div>
+        <h3 class="category-name">Fragrance</h3>
+      </a>
+      <!-- Bath & Body -->
+      <a href="shop.html?category=bath-body" class="category-card">
+        <img src="/images/categories/bathbody.jpg" class="category-img" alt="Bath and Body Category">
+        <div class="category-overlay"></div>
+        <h3 class="category-name">Bath & Body</h3>
+      </a>
+    </div>
+  </section>
+
+  <!-- --- PROMOTIONAL BANNERS --- -->
+  <section class="banner-grid">
+    <div class="banner-card">
+      <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=800&auto=format&fit=crop"
+        class="banner-img" alt="The Hydra Series Promo">
+      <div class="banner-content">
+        <h4 class="banner-subtitle">New Release Collection</h4>
+        <h2 class="banner-title">Hydra-Boost Skincare</h2>
+        <a href="shop.html?category=skincare" class="btn btn-gold">Shop Collection</a>
+      </div>
+    </div>
+    <div class="banner-card">
+      <img src="https://images.unsplash.com/photo-1515688594390-b649af70d282?q=80&w=800&auto=format&fit=crop"
+        class="banner-img" alt="Luxury Makeup Sets">
+      <div class="banner-content">
+        <h4 class="banner-subtitle">Bespoke Custom Kits</h4>
+        <h2 class="banner-title">Signature Gift Sets</h2>
+        <a href="shop.html?category=makeup" class="btn btn-gold">Explore Gift Sets</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- --- BEST SELLERS --- -->
+  <section class="products-section">
+    <h2 class="section-title">Best Sellers</h2>
+    <div class="products-grid" id="bestsellers-grid">
+      <!-- Dynamic products loaded by JS -->
+    </div>
+  </section>
+
+  <!-- --- NEW ARRIVALS --- -->
+  <section class="products-section" style="background-color: var(--soft-grey); padding: 5rem 2rem;">
+    <div style="max-width: 1300px; margin: 0 auto;">
+      <h2 class="section-title">New Arrivals</h2>
+      <div class="products-grid" id="newarrivals-grid">
+        <!-- Dynamic products loaded by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- --- TRENDING NOW --- -->
+  <section class="products-section">
+    <h2 class="section-title">Trending Products</h2>
+    <div class="products-grid" id="trending-grid">
+      <!-- Dynamic products loaded by JS -->
+    </div>
+  </section>
+
+  <!-- --- FOOTER --- -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="index.html" class="logo" style="margin-bottom:1.5rem; display:block;">
+          LUMORA <span>BEAUTY</span>
+        </a>
+        <p>A premium curation of botanical skincare, rich silk makeup, organic hair oils, and oriental perfumes designed
+          to elevate your everyday beauty rituals into royal experiences.</p>
+        <div class="footer-socials">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-pinterest-p"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <h4>Discover</h4>
+        <ul>
+          <li><a href="shop.html">Shop All Products</a></li>
+          <li><a href="shop.html?category=makeup">Makeup Palettes</a></li>
+          <li><a href="shop.html?category=skincare">Skincare Serums</a></li>
+          <li><a href="shop.html?category=fragrance">Luxury Scents</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links">
+        <h4>Customer Care</h4>
+        <ul>
+          <li><a href="dashboard.html">Order Tracking</a></li>
+          <li><a href="wishlist.html">My Wishlist</a></li>
+          <li><a href="#">Shipping Policy</a></li>
+          <li><a href="#">Returns & Exchanges</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-newsletter">
+        <h4>Newsletter</h4>
+        <p>Subscribe to receive luxury launch updates, private sales, and beauty tutorials.</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Your Email Address" required>
+          <button type="submit">Subscribe</button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 LUMORA BEAUTY. All Rights Reserved.</p>
+      <div>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- --- CART SLIDE PANEL --- -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <div class="cart-panel" id="cart-panel">
+    <div class="cart-header">
+      <h3>Your Bag</h3>
+      <button class="cart-close-btn" id="cart-close-btn"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items-wrapper" id="cart-drawer-items">
+      <!-- Dynamic list -->
+    </div>
+    <div class="cart-footer">
+      <div class="cart-summary-row">
+        <span>Subtotal</span>
+        <span id="cart-drawer-subtotal">₹0</span>
+      </div>
+      <div class="cart-total-row">
+        <span>Total Payable</span>
+        <span id="cart-drawer-total">₹0</span>
+      </div>
+      <a href="checkout.html" class="btn btn-gold cart-checkout-btn">Proceed To Checkout</a>
+    </div>
+  </div>
+
+  <!-- --- JAVASCRIPT --- -->
+  <script src="js/main.js"></script>
+  <script>
+    // --- HERO SLIDER ANIMATION ---
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prev-slide');
+    const nextBtn = document.getElementById('next-slide');
+    let currentSlide = 0;
+    let slideInterval;
+
+    const showSlide = (idx) => {
+      slides.forEach(s => s.classList.remove('active'));
+      slides[idx].classList.add('active');
+    };
+
+    const nextSlide = () => {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    };
+
+    const prevSlide = () => {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    };
+
+    nextBtn.addEventListener('click', () => {
+      nextSlide();
+      resetInterval();
+    });
+
+    prevBtn.addEventListener('click', () => {
+      prevSlide();
+      resetInterval();
+    });
+
+    const resetInterval = () => {
+      clearInterval(slideInterval);
+      slideInterval = setInterval(nextSlide, 6000);
+    };
+
+    slideInterval = setInterval(nextSlide, 6000);
+
+    // --- FETCH DYNAMIC FEATURED PRODUCTS ---
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const response = await fetch('/api/products/featured?limit=4');
+        const resData = await response.json();
+
+        if (resData.success) {
+          renderGrid('bestsellers-grid', resData.bestsellers);
+          renderGrid('newarrivals-grid', resData.newArrivals);
+          renderGrid('trending-grid', resData.trending);
+          loadWishlist(); // Sync wishlist hearts
+        }
+      } catch (error) {
+        console.error('Failed to load featured products:', error);
+      }
+    });
+
+    const renderGrid = (gridId, products) => {
+      const grid = document.getElementById(gridId);
+      if (!grid) return;
+
+      if (!products || products.length === 0) {
+        grid.innerHTML = `<p style="grid-column: span 4; text-align:center; color:#888;">No products found.</p>`;
+        return;
+      }
+
+      grid.innerHTML = products.map(prod => {
+        const originalPrice = prod.price;
+        const discount = prod.discount || 0;
+        const currentPrice = Math.round(originalPrice * (1 - discount / 100));
+
+        return `
+          <div class="product-card">
+            <div class="product-badge-group">
+              ${discount > 0 ? `<div class="product-badge badge-discount">-${discount}%</div>` : ''}
+              ${prod.isNewArrival ? `<div class="product-badge badge-new">New</div>` : ''}
+            </div>
+            
+            <button class="product-fav-btn" data-id="${prod._id}" onclick="event.preventDefault(); handleToggleFav('${prod._id}', this)">
+              <i class="fas fa-heart"></i>
+            </button>
+            
+            <a href="product.html?id=${prod._id}" class="product-img-wrapper">
+              <img src="${prod.images[0]}" alt="${prod.name}" class="product-img-primary">
+              <img src="${prod.images[1] || prod.images[0]}" alt="${prod.name}" class="product-img-secondary">
+              <div class="product-quick-view">Quick Details</div>
+            </a>
+            
+            <div class="product-details">
+              <span class="product-category">${prod.category ? prod.category.name : 'Cosmetics'}</span>
+              <h3 class="product-name"><a href="product.html?id=${prod._id}">${prod.name}</a></h3>
+              
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <span>${prod.rating} (${prod.numReviews})</span>
+              </div>
+              
+              <div class="product-price-row">
+                <span class="price-current">₹${currentPrice}</span>
+                ${discount > 0 ? `<span class="price-original">₹${originalPrice}</span>` : ''}
+              </div>
+              
+              <button class="btn btn-primary" style="margin-top:1.5rem; width:100%; font-size:0.75rem;" 
+                onclick="event.preventDefault(); handleAddToCart('${encodeURIComponent(JSON.stringify(prod))}')">
+                Add To Bag
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    };
+
+    // Helper actions
+    const handleAddToCart = (encodedProduct) => {
+      const product = JSON.parse(decodeURIComponent(encodedProduct));
+      addToCart(product, 1);
+    };
+
+    const handleToggleFav = (prodId, element) => {
+      toggleWishlist({ _id: prodId });
+      element.classList.toggle('active');
+    };
+  </script>
+</body>
+
+</html>

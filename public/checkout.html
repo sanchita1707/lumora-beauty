@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | LUMORA BEAUTY</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .checkout-container {
+      max-width: 1200px;
+      margin: calc(var(--header-height) + 2rem) auto 5rem;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 3rem;
+    }
+    .checkout-section {
+      background: var(--luxury-white);
+      border: 1px solid var(--border-grey);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+    }
+    .checkout-section h3 {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      color: var(--luxury-black);
+      border-bottom: 1px solid var(--border-grey);
+      padding-bottom: 0.8rem;
+    }
+    .address-select-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .address-option {
+      border: 1px solid var(--border-grey);
+      padding: 1.2rem;
+      display: flex;
+      gap: 1rem;
+      cursor: pointer;
+      align-items: flex-start;
+      transition: var(--transition-fast);
+    }
+    .address-option.selected {
+      border-color: var(--primary-rose-gold);
+      background-color: var(--cream-bg);
+    }
+    .address-option input[type="radio"] {
+      accent-color: var(--primary-rose-gold);
+      margin-top: 0.2rem;
+    }
+    .payment-option-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .payment-card {
+      border: 1px solid var(--border-grey);
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+      transition: var(--transition-fast);
+    }
+    .payment-card.selected {
+      border-color: var(--primary-rose-gold);
+      background-color: var(--cream-bg);
+    }
+    .payment-card i {
+      font-size: 2rem;
+      color: var(--primary-rose-gold);
+    }
+    .order-summary-box {
+      position: sticky;
+      top: calc(var(--header-height) + 2rem);
+    }
+    .checkout-item {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+      border-bottom: 1px solid var(--soft-grey);
+      padding-bottom: 1rem;
+    }
+    .checkout-item-img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+    }
+    .checkout-item-details {
+      flex-grow: 1;
+    }
+    .coupon-section-input {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.8rem;
+    }
+    .coupon-section-input input {
+      flex: 1;
+      padding: 0.7rem 1rem;
+      border: 1px solid var(--border-grey);
+      font-size: 0.85rem;
+    }
+    .coupon-section-input input:focus {
+      border-color: var(--primary-rose-gold);
+    }
+    /* Simple form styles */
+    .address-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .address-form-full {
+      grid-column: span 2;
+    }
+    .form-group-chk {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-group-chk label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .form-group-chk input {
+      padding: 0.65rem 1rem;
+      border: 1px solid var(--border-grey);
+      font-size: 0.85rem;
+    }
+    .form-group-chk input:focus {
+      border-color: var(--primary-rose-gold);
+    }
+    /* Mock simulation modal */
+    .sim-modal {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .sim-modal.active { display: flex; }
+    .sim-modal-content {
+      background: white;
+      padding: 2.5rem;
+      width: 420px;
+      border: 1px solid var(--primary-rose-gold);
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+    }
+    .sim-modal-content i {
+      font-size: 3rem;
+      color: var(--primary-rose-gold);
+      margin-bottom: 1rem;
+    }
+    @media (max-width: 992px) {
+      .checkout-container { grid-template-columns: 1fr; }
+    }
+  </style>
+  <!-- Razorpay Standard Checkout SDK -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+
+  <!-- --- HEADER NAVIGATION --- -->
+  <header>
+    <div class="header-container">
+      <a href="index.html" class="logo">LUMORA <span>BEAUTY</span></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop All</a>
+        <a href="shop.html?category=makeup">Makeup</a>
+        <a href="shop.html?category=skincare">Skincare</a>
+        <a href="shop.html?category=fragrance">Fragrance</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="shop.html" class="action-icon" title="Search"><i class="fas fa-search"></i></a>
+        <a href="wishlist.html" class="action-icon" title="Wishlist">
+          <i class="far fa-heart"></i>
+          <span class="badge-count wishlist-badge-count">0</span>
+        </a>
+        <a href="#" class="action-icon" id="header-cart-icon" title="Shopping Bag"><i class="fas fa-shopping-bag"></i></a>
+        <a href="auth.html" class="action-icon" id="header-user-link" title="My Account"><i class="far fa-user"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- --- CHECKOUT LAYOUT --- -->
+  <main class="checkout-container">
+    
+    <!-- Left Column: Shipping & Payment -->
+    <div>
+      <!-- Shipping Address -->
+      <section class="checkout-section">
+        <h3>Shipping Address</h3>
+        
+        <!-- Saved Addresses -->
+        <div class="address-select-grid" id="saved-addresses-list">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- Add Address Collapse/Button -->
+        <div id="new-address-toggle" style="margin-bottom:1.5rem;">
+          <button class="btn btn-outline" style="font-size:0.75rem; width:100%;" onclick="toggleAddressForm()">+ Add New Address</button>
+        </div>
+
+        <!-- Address Form -->
+        <div class="address-form" id="new-address-form" style="display:none;">
+          <div class="form-group-chk address-form-full">
+            <label>Street Address</label>
+            <input type="text" id="ship-street" placeholder="House no, block, street address">
+          </div>
+          <div class="form-group-chk">
+            <label>City</label>
+            <input type="text" id="ship-city" placeholder="Mumbai">
+          </div>
+          <div class="form-group-chk">
+            <label>State</label>
+            <input type="text" id="ship-state" placeholder="Maharashtra">
+          </div>
+          <div class="form-group-chk">
+            <label>Postal Code (PIN)</label>
+            <input type="text" id="ship-pin" placeholder="400001">
+          </div>
+          <div class="form-group-chk">
+            <label>Country</label>
+            <input type="text" id="ship-country" value="India" readonly>
+          </div>
+          <button class="btn btn-primary address-form-full" style="font-size:0.75rem; margin-top:1rem;" onclick="saveNewAddress()">Save Address</button>
+        </div>
+      </section>
+
+      <!-- Payment Method -->
+      <section class="checkout-section">
+        <h3>Payment Method</h3>
+        <div class="payment-option-grid">
+          <!-- COD -->
+          <div class="payment-card selected" id="pay-cod" onclick="selectPaymentMethod('COD')">
+            <i class="fas fa-hand-holding-usd"></i>
+            <h4 style="font-size:0.95rem; font-weight:600;">Cash On Delivery (COD)</h4>
+            <p style="font-size:0.75rem; color:var(--text-grey);">Pay cash at your doorstep</p>
+          </div>
+          <!-- Razorpay -->
+          <div class="payment-card" id="pay-rzp" onclick="selectPaymentMethod('Razorpay')">
+            <i class="fas fa-credit-card"></i>
+            <h4 style="font-size:0.95rem; font-weight:600;">Razorpay Online</h4>
+            <p style="font-size:0.75rem; color:var(--text-grey);">UPI, Cards, NetBanking, Wallets</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Right Column: Cart Summary & Coupon -->
+    <div class="order-summary-box">
+      <section class="checkout-section">
+        <h3>Order Summary</h3>
+        
+        <div id="checkout-items-list" style="margin-bottom:2rem; max-height:220px; overflow-y:auto; padding-right:0.5rem;">
+          <!-- Loaded dynamically -->
+        </div>
+
+        <!-- Promo Coupon Input -->
+        <div class="form-group-chk" style="margin-bottom:0.5rem;"><label>Promo Code</label></div>
+        <div class="coupon-section-input">
+          <input type="text" id="coupon-input" placeholder="e.g. WELCOME10" style="text-transform: uppercase;">
+          <button class="btn btn-primary" style="font-size:0.75rem;" onclick="applyPromoCoupon()">Apply</button>
+        </div>
+        <div id="coupon-status" style="font-size:0.8rem; margin-top:-1.2rem; margin-bottom:1.5rem; font-weight:600; display:none;"></div>
+
+        <!-- Calculations -->
+        <div class="cart-summary-row" style="margin-bottom:0.6rem; border-top: 1px solid var(--border-grey); padding-top:1.5rem;">
+          <span>Bag Subtotal</span>
+          <span id="chk-subtotal">₹0</span>
+        </div>
+        <div class="cart-summary-row" style="margin-bottom:0.6rem; color:var(--success-green); font-weight:500;">
+          <span>Coupon Discount</span>
+          <span id="chk-discount">₹0</span>
+        </div>
+        <div class="cart-summary-row" style="margin-bottom:1.5rem;">
+          <span>Shipping Charges</span>
+          <span id="chk-shipping">Free</span>
+        </div>
+        <div class="cart-total-row" style="border-top:1.5px solid var(--luxury-black); padding-top:1rem; margin-bottom:2.5rem;">
+          <span>Total Amount</span>
+          <span id="chk-total">₹0</span>
+        </div>
+
+        <button class="btn btn-gold" id="place-order-btn" style="width:100%; font-weight:600;" onclick="handlePlaceOrder()">Place Order & Pay</button>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- --- PAYMENT SIMULATION MODAL (FOR TESTING SANDBOX) --- -->
+  <div class="sim-modal" id="simulation-modal">
+    <div class="sim-modal-content">
+      <i class="fas fa-robot"></i>
+      <h3 style="font-family:var(--font-serif); font-size:1.5rem; margin-bottom:1rem; text-transform:uppercase;">Mock Payment Gateway</h3>
+      <p style="font-size:0.85rem; color:var(--text-grey); margin-bottom:2rem; line-height:1.6;">You are checking out in <strong>Sandbox Mode</strong>. Simulate the response from the Razorpay checkout popup window.</p>
+      
+      <div style="display:flex; flex-direction:column; gap:1rem;">
+        <button class="btn btn-gold" style="font-size:0.8rem;" onclick="simulateRzpResponse(true)">Simulate Payment Success</button>
+        <button class="btn btn-outline" style="font-size:0.8rem;" onclick="simulateRzpResponse(false)">Simulate Payment Failure</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- --- FOOTER --- -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="index.html" class="logo" style="margin-bottom:1.5rem; display:block;">
+          LUMORA <span>BEAUTY</span>
+        </a>
+        <p>A premium curation of botanical skincare, rich silk makeup, organic hair oils, and oriental perfumes designed to elevate your everyday beauty rituals into royal experiences.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- --- JAVASCRIPT --- -->
+  <script src="js/main.js"></script>
+  <script>
+    let selectedAddressId = null;
+    let selectedPayment = 'COD';
+    let couponDiscount = 0;
+    let appliedCouponCode = null;
+    let currentRzpOrderId = null;
+
+    // Redirect guest user
+    if (!getAuthUser()) {
+      showToast('Please login to checkout', 'info');
+      window.location.href = '/auth.html?redirect=checkout.html';
+    }
+
+    // Redirect empty cart
+    if (JSON.parse(localStorage.getItem('lumora_cart') || '[]').length === 0) {
+      window.location.href = '/shop.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSummary();
+      loadUserAddresses();
+    });
+
+    const renderSummary = () => {
+      const itemsList = document.getElementById('checkout-items-list');
+      const cartItems = JSON.parse(localStorage.getItem('lumora_cart') || '[]');
+      
+      itemsList.innerHTML = cartItems.map(item => `
+        <div class="checkout-item">
+          <img src="${item.image}" alt="${item.name}" class="checkout-item-img">
+          <div class="checkout-item-details">
+            <h4 style="font-size:0.85rem; font-weight:600; font-family:var(--font-serif); margin-bottom:0.2rem;">${item.name}</h4>
+            <div style="font-size:0.75rem; color:var(--text-grey);">Qty: ${item.quantity} &nbsp;&bull;&nbsp; Price: ₹${item.price}</div>
+          </div>
+          <span style="font-size:0.85rem; font-weight:600;">₹${item.price * item.quantity}</span>
+        </div>
+      `).join('');
+
+      recalculateBilling();
+    };
+
+    const recalculateBilling = () => {
+      const subtotal = getCartSubtotal();
+      const shipping = subtotal >= 1000 ? 0 : 100; // Free shipping above 1000
+      const total = Math.max(0, subtotal - couponDiscount + shipping);
+
+      document.getElementById('chk-subtotal').textContent = `₹${subtotal}`;
+      document.getElementById('chk-discount').textContent = `-₹${couponDiscount}`;
+      document.getElementById('chk-shipping').textContent = shipping === 0 ? 'Free' : `₹${shipping}`;
+      document.getElementById('chk-total').textContent = `₹${total}`;
+    };
+
+    const loadUserAddresses = async () => {
+      try {
+        const res = await apiFetch('/auth/profile');
+        if (res.success && res.addresses && res.addresses.length > 0) {
+          const list = document.getElementById('saved-addresses-list');
+          list.innerHTML = res.addresses.map((addr, i) => `
+            <div class="address-option ${addr.isDefault ? 'selected' : ''}" onclick="selectAddress('${addr._id}', this)">
+              <input type="radio" name="chk-address" ${addr.isDefault ? 'checked' : ''}>
+              <div>
+                <div class="address-street">${addr.street}</div>
+                <div class="address-city-state">${addr.city}, ${addr.state} - ${addr.postalCode}</div>
+                <div class="address-city-state">${addr.country}</div>
+              </div>
+            </div>
+          `).join('');
+
+          const defaultAddr = res.addresses.find(a => a.isDefault) || res.addresses[0];
+          selectedAddressId = defaultAddr._id;
+        } else {
+          // No addresses, expand form
+          toggleAddressForm(true);
+        }
+      } catch (e) {
+        showToast('Failed to load profile addresses', 'error');
+      }
+    };
+
+    const selectAddress = (addrId, element) => {
+      selectedAddressId = addrId;
+      document.querySelectorAll('.address-option').forEach(opt => opt.classList.remove('selected'));
+      element.classList.add('selected');
+      const radio = element.querySelector('input[type="radio"]');
+      if (radio) radio.checked = true;
+    };
+
+    const toggleAddressForm = (forceShow = false) => {
+      const form = document.getElementById('new-address-form');
+      const btn = document.getElementById('new-address-toggle');
+      if (form.style.display === 'none' || forceShow) {
+        form.style.display = 'grid';
+        btn.style.display = 'none';
+      } else {
+        form.style.display = 'none';
+        btn.style.display = 'block';
+      }
+    };
+
+    const saveNewAddress = async () => {
+      const street = document.getElementById('ship-street').value.trim();
+      const city = document.getElementById('ship-city').value.trim();
+      const state = document.getElementById('ship-state').value.trim();
+      const postalCode = document.getElementById('ship-pin').value.trim();
+      const country = document.getElementById('ship-country').value.trim();
+
+      if (!street || !city || !state || !postalCode) {
+        showToast('Please fill all address fields', 'warning');
+        return;
+      }
+
+      try {
+        const res = await apiFetch('/auth/address', {
+          method: 'POST',
+          body: JSON.stringify({ street, city, state, postalCode, country, isDefault: true })
+        });
+
+        if (res.success) {
+          showToast('Address added successfully', 'success');
+          // Clear inputs
+          document.getElementById('ship-street').value = '';
+          document.getElementById('ship-city').value = '';
+          document.getElementById('ship-state').value = '';
+          document.getElementById('ship-pin').value = '';
+
+          // Hide form
+          document.getElementById('new-address-form').style.display = 'none';
+          document.getElementById('new-address-toggle').style.display = 'block';
+
+          // Reload
+          await loadUserAddresses();
+        }
+      } catch (e) {
+        showToast('Failed to save address', 'error');
+      }
+    };
+
+    const selectPaymentMethod = (method) => {
+      selectedPayment = method;
+      document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('selected'));
+      if (method === 'COD') {
+        document.getElementById('pay-cod').classList.add('selected');
+      } else {
+        document.getElementById('pay-rzp').classList.add('selected');
+      }
+    };
+
+    // --- APPLY COUPON ---
+    const applyPromoCoupon = async () => {
+      const code = document.getElementById('coupon-input').value.trim();
+      const statusText = document.getElementById('coupon-status');
+      
+      if (!code) {
+        showToast('Please enter a coupon code', 'warning');
+        return;
+      }
+
+      try {
+        const cartVal = getCartSubtotal();
+        const res = await apiFetch('/coupons/validate', {
+          method: 'POST',
+          body: JSON.stringify({ code, cartValue: cartVal })
+        });
+
+        statusText.style.display = 'block';
+        if (res.success) {
+          couponDiscount = res.discountAmount;
+          appliedCouponCode = res.code;
+          statusText.textContent = `Applied! Discount of ₹${couponDiscount} applied.`;
+          statusText.style.color = 'var(--success-green)';
+          recalculateBilling();
+          showToast('Coupon applied successfully', 'success');
+        } else {
+          couponDiscount = 0;
+          appliedCouponCode = null;
+          statusText.textContent = res.message;
+          statusText.style.color = 'var(--error-red)';
+          recalculateBilling();
+        }
+      } catch (e) {
+        showToast('Failed to apply coupon', 'error');
+      }
+    };
+
+    // --- PLACE ORDER FLOW ---
+    const handlePlaceOrder = async () => {
+      if (!selectedAddressId) {
+        showToast('Please select or add a shipping address', 'warning');
+        return;
+      }
+
+      const cartItems = JSON.parse(localStorage.getItem('lumora_cart') || '[]');
+      const itemsPayload = cartItems.map(item => ({
+        product: item.product,
+        quantity: item.quantity
+      }));
+
+      // Find selected address details
+      let addressDetails = null;
+      try {
+        const profile = await apiFetch('/auth/profile');
+        addressDetails = profile.addresses.find(a => a._id.toString() === selectedAddressId.toString());
+      } catch (e) {}
+
+      if (!addressDetails) {
+        showToast('Error validating shipping address', 'error');
+        return;
+      }
+
+      const orderPayload = {
+        items: itemsPayload,
+        shippingAddress: {
+          street: addressDetails.street,
+          city: addressDetails.city,
+          state: addressDetails.state,
+          postalCode: addressDetails.postalCode,
+          country: addressDetails.country
+        },
+        paymentMethod: selectedPayment,
+        couponCode: appliedCouponCode
+      };
+
+      document.getElementById('place-order-btn').disabled = true;
+      document.getElementById('place-order-btn').textContent = 'Processing...';
+
+      try {
+        const res = await apiFetch('/orders', {
+          method: 'POST',
+          body: JSON.stringify(orderPayload)
+        });
+
+        if (res.success) {
+          if (selectedPayment === 'COD') {
+            // Cash on Delivery succeeded directly
+            clearCart();
+            showToast('Order placed successfully via COD!', 'success');
+            setTimeout(() => {
+              window.location.href = '/dashboard.html';
+            }, 2000);
+          } else {
+            // Razorpay initiated
+            currentRzpOrderId = res.razorpayOrder.id;
+            
+            if (res.razorpayOrder.isMock) {
+              // Trigger Sandbox Simulation Modal
+              document.getElementById('simulation-modal').classList.add('active');
+            } else {
+              // Trigger Real Razorpay Checkout Popup
+              const options = {
+                key: res.razorpayOrder.keyId,
+                amount: res.razorpayOrder.amount,
+                currency: res.razorpayOrder.currency,
+                name: 'Lumora Beauty',
+                description: 'Luxury Cosmetics Payment',
+                order_id: res.razorpayOrder.id,
+                handler: async function (response) {
+                  await verifyPaymentSignature(
+                    response.razorpay_order_id,
+                    response.razorpay_payment_id,
+                    response.razorpay_signature
+                  );
+                },
+                prefill: {
+                  name: getAuthUser().name,
+                  email: getAuthUser().email,
+                  contact: getAuthUser().phone
+                },
+                theme: {
+                  color: '#B76E79'
+                }
+              };
+              const rzp = new Razorpay(options);
+              rzp.open();
+              
+              // Restore buttons if checkout was closed/cancelled
+              document.getElementById('place-order-btn').disabled = false;
+              document.getElementById('place-order-btn').textContent = 'Place Order & Pay';
+            }
+          }
+        } else {
+          showToast(res.message, 'error');
+          document.getElementById('place-order-btn').disabled = false;
+          document.getElementById('place-order-btn').textContent = 'Place Order & Pay';
+        }
+      } catch (error) {
+        showToast('Failed to place order. Connection error.', 'error');
+        document.getElementById('place-order-btn').disabled = false;
+        document.getElementById('place-order-btn').textContent = 'Place Order & Pay';
+      }
+    };
+
+    // --- MOCK SIMULATOR HANDLER ---
+    const simulateRzpResponse = async (success) => {
+      document.getElementById('simulation-modal').classList.remove('active');
+      
+      if (success) {
+        const mockPaymentId = `pay_${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+        await verifyPaymentSignature(currentRzpOrderId, mockPaymentId, 'mock_signature');
+      } else {
+        showToast('Mock payment was cancelled or failed.', 'error');
+        document.getElementById('place-order-btn').disabled = false;
+        document.getElementById('place-order-btn').textContent = 'Place Order & Pay';
+      }
+    };
+
+    // --- PAYMENT VERIFICATION ---
+    const verifyPaymentSignature = async (orderId, paymentId, signature) => {
+      try {
+        const res = await apiFetch('/orders/verify', {
+          method: 'POST',
+          body: JSON.stringify({
+            razorpay_order_id: orderId,
+            razorpay_payment_id: paymentId,
+            razorpay_signature: signature
+          })
+        });
+
+        if (res.success) {
+          clearCart();
+          showToast('Payment verified! Order placed successfully.', 'success');
+          setTimeout(() => {
+            window.location.href = '/dashboard.html';
+          }, 2000);
+        } else {
+          showToast(res.message, 'error');
+          document.getElementById('place-order-btn').disabled = false;
+          document.getElementById('place-order-btn').textContent = 'Place Order & Pay';
+        }
+      } catch (e) {
+        showToast('Failed to verify payment with server.', 'error');
+        document.getElementById('place-order-btn').disabled = false;
+        document.getElementById('place-order-btn').textContent = 'Place Order & Pay';
+      }
+    };
+  </script>
+</body>
+</html>

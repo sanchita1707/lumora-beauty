@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | LUMORA BEAUTY</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+  <!-- --- HEADER NAVIGATION --- -->
+  <header>
+    <div class="header-container">
+      <a href="index.html" class="logo">LUMORA <span>BEAUTY</span></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop All</a>
+        <a href="shop.html?category=makeup">Makeup</a>
+        <a href="shop.html?category=skincare">Skincare</a>
+        <a href="shop.html?category=fragrance">Fragrance</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="shop.html" class="action-icon" title="Search"><i class="fas fa-search"></i></a>
+        <a href="wishlist.html" class="action-icon" title="Wishlist"><i class="far fa-heart"></i></a>
+        <a href="#" class="action-icon" id="header-cart-icon" title="Shopping Bag"><i class="fas fa-shopping-bag"></i></a>
+        <a href="dashboard.html" class="action-icon active" id="header-user-link" title="My Account"><i class="far fa-user"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- --- ADMIN CONTAINER --- -->
+  <main class="admin-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside style="background:var(--luxury-white); border:1px solid var(--border-grey); padding:2rem 0; height:fit-content;">
+      <div style="text-align:center; padding-bottom:1.5rem; margin-bottom:1.5rem; border-bottom:1px solid var(--border-grey);">
+        <div class="dash-avatar" style="background:var(--luxury-black); color:var(--rose-gold-light);">A</div>
+        <h4 style="font-family:var(--font-serif); font-weight:600; font-size:1.15rem;">Admin Panel</h4>
+        <span style="font-size:0.75rem; text-transform:uppercase; color:var(--primary-rose-gold); font-weight:600;">System Control</span>
+      </div>
+      <nav style="display:flex; flex-direction:column;">
+        <div class="dash-nav-item active" id="btn-tab-stats" onclick="switchAdminTab('tab-stats')"><i class="fas fa-chart-line"></i> Dashboard</div>
+        <div class="dash-nav-item" id="btn-tab-products" onclick="switchAdminTab('tab-products')"><i class="fas fa-spa"></i> Products</div>
+        <div class="dash-nav-item" id="btn-tab-orders" onclick="switchAdminTab('tab-orders')"><i class="fas fa-shipping-fast"></i> Orders</div>
+        <div class="dash-nav-item" id="btn-tab-coupons" onclick="switchAdminTab('tab-coupons')"><i class="fas fa-ticket-alt"></i> Coupons</div>
+      </nav>
+    </aside>
+
+    <!-- Main Content Panes -->
+    <div>
+      
+      <!-- Stats Tab -->
+      <section class="dash-content-pane active" id="tab-stats">
+        <h3 class="pane-title" style="font-size:1.8rem;">Business Performance</h3>
+        
+        <!-- Grid Counters -->
+        <div class="admin-stats-grid">
+          <div class="stat-card-admin">
+            <span class="stat-card-label">Total Revenue</span>
+            <span class="stat-card-val" id="stat-revenue">₹0</span>
+          </div>
+          <div class="stat-card-admin">
+            <span class="stat-card-label">Orders Placed</span>
+            <span class="stat-card-val" id="stat-orders">0</span>
+          </div>
+          <div class="stat-card-admin">
+            <span class="stat-card-label">Registered Customers</span>
+            <span class="stat-card-val" id="stat-users">0</span>
+          </div>
+          <div class="stat-card-admin">
+            <span class="stat-card-label">Active Products</span>
+            <span class="stat-card-val" id="stat-products">0</span>
+          </div>
+        </div>
+
+        <div class="admin-visuals-grid">
+          <!-- Sales Graph breakdown -->
+          <div class="admin-chart-card">
+            <h4 class="chart-title-admin">Category Sales Distribution</h4>
+            <div class="css-bar-chart" id="category-sales-chart">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Quick Recent Orders -->
+          <div class="admin-chart-card">
+            <h4 class="chart-title-admin">Recent Orders</h4>
+            <div id="recent-orders-list-stats" style="font-size:0.85rem; display:flex; flex-direction:column; gap:0.8rem;">
+              <!-- Loaded dynamically -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Products Tab -->
+      <section class="dash-content-pane" id="tab-products">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; border-bottom:1px solid var(--border-grey); padding-bottom:1rem;">
+          <h3 class="pane-title" style="border-bottom:none; margin-bottom:0; padding-bottom:0; font-size:1.8rem;">Product Catalog</h3>
+          <button class="btn btn-primary" style="font-size:0.75rem;" onclick="openProductModal('add')">+ Create Product</button>
+        </div>
+
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Product Name</th>
+                <th>Price (INR)</th>
+                <th>Discount</th>
+                <th>Stock</th>
+                <th>Brand</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-products-table-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Orders Tab -->
+      <section class="dash-content-pane" id="tab-orders">
+        <h3 class="pane-title" style="font-size:1.8rem;">Customer Orders</h3>
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Amount</th>
+                <th>Payment</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-orders-table-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Coupons Tab -->
+      <section class="dash-content-pane" id="tab-coupons">
+        <h3 class="pane-title" style="font-size:1.8rem;">Promo Code Management</h3>
+        
+        <!-- Coupon Form -->
+        <div class="card-luxury" style="margin-bottom:3rem; border-color:var(--primary-rose-gold);">
+          <h4 style="font-family:var(--font-serif); font-size:1.3rem; margin-bottom:1.5rem;">Create Coupon Code</h4>
+          <div class="admin-form-grid">
+            <div class="form-group-chk">
+              <label>Promo Code</label>
+              <input type="text" id="coupon-code" placeholder="WELCOME20" style="text-transform: uppercase;">
+            </div>
+            <div class="form-group-chk">
+              <label>Discount Type</label>
+              <select id="coupon-type" style="padding:0.65rem; border:1px solid var(--border-grey);">
+                <option value="percentage">Percentage (%)</option>
+                <option value="flat">Flat Amount (INR)</option>
+              </select>
+            </div>
+            <div class="form-group-chk">
+              <label>Value (Flat / %)</label>
+              <input type="number" id="coupon-val" placeholder="20">
+            </div>
+            <div class="form-group-chk">
+              <label>Min Cart Value (INR)</label>
+              <input type="number" id="coupon-min-cart" placeholder="1000">
+            </div>
+            <div class="form-group-chk">
+              <label>Max Discount Value (For %)</label>
+              <input type="number" id="coupon-max-disc" placeholder="500">
+            </div>
+            <div class="form-group-chk">
+              <label>Expiry Date</label>
+              <input type="date" id="coupon-expiry">
+            </div>
+            <button class="btn btn-primary admin-form-full" style="font-size:0.75rem; margin-top:1rem;" onclick="createNewCouponCode()">Create Coupon</button>
+          </div>
+        </div>
+
+        <!-- Coupon Table -->
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Type</th>
+                <th>Value</th>
+                <th>Min Cart</th>
+                <th>Expiry</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-coupons-table-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- --- CREATE / EDIT PRODUCT MODAL (multipart upload support) --- -->
+  <div class="admin-modal-overlay" id="product-modal-overlay">
+    <div class="admin-modal-content">
+      <div class="modal-header-admin">
+        <h3 id="product-modal-title">Create Product</h3>
+        <span class="modal-close-admin" onclick="closeProductModal()">&times;</span>
+      </div>
+      <form id="product-form" onsubmit="handleProductFormSubmit(event)">
+        <input type="hidden" id="modal-product-id">
+        <div class="admin-form-grid">
+          <div class="form-group-chk admin-form-full">
+            <label>Product Name</label>
+            <input type="text" id="modal-name" required placeholder="Luxury Glow Face Oil">
+          </div>
+          <div class="form-group-chk admin-form-full">
+            <label>Description</label>
+            <textarea id="modal-desc" required style="width:100%; height:80px; padding:0.8rem; border:1px solid var(--border-grey); resize:none;" placeholder="Description..."></textarea>
+          </div>
+          <div class="form-group-chk">
+            <label>Price (INR)</label>
+            <input type="number" id="modal-price" required min="0" placeholder="1599">
+          </div>
+          <div class="form-group-chk">
+            <label>Discount (%)</label>
+            <input type="number" id="modal-discount" min="0" max="100" placeholder="15">
+          </div>
+          <div class="form-group-chk">
+            <label>Category</label>
+            <select id="modal-category" required style="padding:0.65rem; border:1px solid var(--border-grey);">
+              <!-- Populated via JS -->
+            </select>
+          </div>
+          <div class="form-group-chk">
+            <label>Stock Count</label>
+            <input type="number" id="modal-stock" required min="0" placeholder="50">
+          </div>
+          <div class="form-group-chk">
+            <label>Brand</label>
+            <input type="text" id="modal-brand" value="Lumora Beauty">
+          </div>
+          <div class="form-group-chk">
+            <label>Tags (Comma Separated)</label>
+            <input type="text" id="modal-tags" placeholder="vegan, hydrating, organic">
+          </div>
+          <div class="form-group-chk admin-form-full">
+            <label>Upload Images (Cloudinary Upload)</label>
+            <input type="file" id="modal-images" multiple accept="image/*" style="border:none; padding:0;">
+            <p style="font-size:0.7rem; color:var(--text-grey); margin-top:-0.3rem;">Upload up to 5 images. Fallback applies if no keys configured.</p>
+          </div>
+          
+          <div class="admin-checkbox-group">
+            <input type="checkbox" id="modal-bestseller">
+            <label for="modal-bestseller">Is Bestseller</label>
+          </div>
+          <div class="admin-checkbox-group">
+            <input type="checkbox" id="modal-new">
+            <label for="modal-new">Is New Arrival</label>
+          </div>
+          <div class="admin-checkbox-group">
+            <input type="checkbox" id="modal-trending">
+            <label for="modal-trending">Is Trending</label>
+          </div>
+
+          <button type="submit" class="btn btn-gold admin-form-full" style="font-size:0.8rem; margin-top:1.5rem;" id="modal-submit-btn">Save Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- --- EDIT ORDER STATUS MODAL --- -->
+  <div class="admin-modal-overlay" id="order-modal-overlay">
+    <div class="admin-modal-content" style="width:480px;">
+      <div class="modal-header-admin">
+        <h3>Update Shipping Status</h3>
+        <span class="modal-close-admin" onclick="closeOrderModal()">&times;</span>
+      </div>
+      <form id="order-status-form" onsubmit="handleOrderStatusSubmit(event)">
+        <input type="hidden" id="modal-order-id">
+        <div style="display:flex; flex-direction:column; gap:1.2rem;">
+          <div class="form-group-chk">
+            <label>Order Status</label>
+            <select id="modal-order-status" style="padding:0.65rem; border:1px solid var(--border-grey);">
+              <option value="Pending">Pending</option>
+              <option value="Processing">Processing</option>
+              <option value="Shipped">Shipped</option>
+              <option value="Delivered">Delivered</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+          <div class="form-group-chk">
+            <label>Carrier Tracking Number</label>
+            <input type="text" id="modal-order-tracking-num" placeholder="e.g. SHIP123456789">
+          </div>
+          <div class="form-group-chk">
+            <label>Tracking Description / Details</label>
+            <textarea id="modal-order-tracking-desc" style="width:100%; height:80px; padding:0.8rem; border:1px solid var(--border-grey); resize:none;" placeholder="Carrier departed sorting center..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-gold" style="font-size:0.8rem; margin-top:1rem;">Save Status Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- --- FOOTER BRAND --- -->
+  <footer style="margin-top:5rem;">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">LUMORA <span>BEAUTY</span></a>
+        <p>Administrative system management terminal.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- --- JAVASCRIPT --- -->
+  <script src="js/main.js"></script>
+  <script>
+    // Guard route: admin role required
+    const activeUser = getAuthUser();
+    if (!activeUser || activeUser.role !== 'admin') {
+      window.location.href = '/dashboard.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadAdminStats();
+      loadAdminProducts();
+      loadAdminOrders();
+      loadAdminCoupons();
+      loadCategoryDropdown();
+    });
+
+    // --- TAB SWITCH ACTIONS ---
+    const switchAdminTab = (tabId) => {
+      document.querySelectorAll('.dash-nav-item').forEach(nav => nav.classList.remove('active'));
+      const activeNav = document.getElementById(`btn-${tabId}`);
+      if (activeNav) activeNav.classList.add('active');
+
+      document.querySelectorAll('.dash-content-pane').forEach(pane => pane.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+    };
+
+    // --- STATS OVERVIEW ---
+    const loadAdminStats = async () => {
+      try {
+        const res = await apiFetch('/admin/stats');
+        if (res.success) {
+          document.getElementById('stat-revenue').textContent = `₹${res.stats.totalSales}`;
+          document.getElementById('stat-orders').textContent = res.stats.totalOrders;
+          document.getElementById('stat-users').textContent = res.stats.totalUsers;
+          document.getElementById('stat-products').textContent = res.stats.totalProducts;
+
+          // Category visual CSS Bar Chart
+          const chart = document.getElementById('category-sales-chart');
+          const maxRevenue = Math.max(...res.salesByCategory.map(c => c.revenue), 1);
+          
+          chart.innerHTML = res.salesByCategory.map(cat => {
+            const pct = (cat.revenue / maxRevenue) * 100;
+            return `
+              <div class="chart-row">
+                <span class="chart-label">${cat.categoryName}</span>
+                <div class="chart-bar-wrapper">
+                  <div class="chart-bar-fill" style="width: ${pct}%"></div>
+                </div>
+                <span class="chart-value">₹${cat.revenue}</span>
+              </div>
+            `;
+          }).join('');
+
+          // Stats Quick Recent orders
+          const recentOrders = document.getElementById('recent-orders-list-stats');
+          if (res.recentOrders.length === 0) {
+            recentOrders.innerHTML = `<p style="color:#888;">No orders placed yet.</p>`;
+          } else {
+            recentOrders.innerHTML = res.recentOrders.map(order => `
+              <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border-grey); padding-bottom:0.5rem;">
+                <div>
+                  <strong>${order.user ? order.user.name : 'Deleted User'}</strong><br>
+                  <span style="font-size:0.75rem; color:#888;">${new Date(order.createdAt).toLocaleDateString()}</span>
+                </div>
+                <div style="text-align:right;">
+                  <strong>₹${order.payableAmount}</strong><br>
+                  <span style="font-size:0.7rem;" class="order-status-badge ${order.status.toLowerCase()}">${order.status}</span>
+                </div>
+              </div>
+            `).join('');
+          }
+        }
+      } catch (e) {
+        showToast('Failed to load dashboard statistics', 'error');
+      }
+    };
+
+    // --- PRODUCT CRUD ---
+    let categoriesList = [];
+
+    const loadCategoryDropdown = async () => {
+      try {
+        const res = await fetch('/api/categories');
+        const data = await res.json();
+        if (data.success) {
+          categoriesList = data.data;
+          const select = document.getElementById('modal-category');
+          select.innerHTML = categoriesList.map(cat => `
+            <option value="${cat._id}">${cat.name}</option>
+          `).join('');
+        }
+      } catch (e) {}
+    };
+
+    const loadAdminProducts = async () => {
+      try {
+        const res = await fetch('/api/products?limit=100');
+        const data = await res.json();
+        if (data.success) {
+          const body = document.getElementById('admin-products-table-body');
+          body.innerHTML = data.data.map(prod => `
+            <tr>
+              <td><img src="${prod.images[0]}" style="width:40px; height:40px; object-fit:cover; border:1px solid #ccc;" alt="${prod.name}"></td>
+              <td style="font-weight:600; font-family:var(--font-serif); font-size:0.95rem;">${prod.name}</td>
+              <td>₹${prod.price}</td>
+              <td>${prod.discount}%</td>
+              <td>${prod.stock}</td>
+              <td>${prod.brand}</td>
+              <td>
+                <button class="admin-action-btn" onclick="openProductModal('edit', '${encodeURIComponent(JSON.stringify(prod))}')">Edit</button>
+                <button class="admin-action-btn btn-danger-admin" style="border-color:var(--error-red); color:var(--error-red);" onclick="deleteProductCatalog('${prod._id}')">Delete</button>
+              </td>
+            </tr>
+          `).join('');
+        }
+      } catch (e) {
+        showToast('Failed to load products list', 'error');
+      }
+    };
+
+    const openProductModal = (mode, encodedProduct) => {
+      const modal = document.getElementById('product-modal-overlay');
+      const title = document.getElementById('product-modal-title');
+      
+      modal.classList.add('active');
+
+      if (mode === 'add') {
+        title.textContent = 'Create Product';
+        document.getElementById('modal-product-id').value = '';
+        document.getElementById('product-form').reset();
+      } else {
+        title.textContent = 'Edit Product';
+        const prod = JSON.parse(decodeURIComponent(encodedProduct));
+        
+        document.getElementById('modal-product-id').value = prod._id;
+        document.getElementById('modal-name').value = prod.name;
+        document.getElementById('modal-desc').value = prod.description;
+        document.getElementById('modal-price').value = prod.price;
+        document.getElementById('modal-discount').value = prod.discount || 0;
+        document.getElementById('modal-category').value = prod.category ? prod.category._id : '';
+        document.getElementById('modal-stock').value = prod.stock;
+        document.getElementById('modal-brand').value = prod.brand || 'Lumora Beauty';
+        document.getElementById('modal-tags').value = prod.tags.join(', ');
+
+        document.getElementById('modal-bestseller').checked = prod.isBestseller || false;
+        document.getElementById('modal-new').checked = prod.isNewArrival || false;
+        document.getElementById('modal-trending').checked = prod.isTrending || false;
+      }
+    };
+
+    const closeProductModal = () => {
+      document.getElementById('product-modal-overlay').classList.remove('active');
+    };
+
+    const handleProductFormSubmit = async (e) => {
+      e.preventDefault();
+      
+      const prodId = document.getElementById('modal-product-id').value;
+      const name = document.getElementById('modal-name').value;
+      const description = document.getElementById('modal-desc').value;
+      const price = document.getElementById('modal-price').value;
+      const discount = document.getElementById('modal-discount').value;
+      const category = document.getElementById('modal-category').value;
+      const stock = document.getElementById('modal-stock').value;
+      const brand = document.getElementById('modal-brand').value;
+      const tags = document.getElementById('modal-tags').value;
+
+      const isBestseller = document.getElementById('modal-bestseller').checked;
+      const isNewArrival = document.getElementById('modal-new').checked;
+      const isTrending = document.getElementById('modal-trending').checked;
+
+      const fileInput = document.getElementById('modal-images');
+
+      // Create Multipart FormData to support Cloudinary uploading
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('description', description);
+      formData.append('price', price);
+      formData.append('discount', discount);
+      formData.append('category', category);
+      formData.append('stock', stock);
+      formData.append('brand', brand);
+      formData.append('tags', tags);
+      formData.append('isBestseller', isBestseller);
+      formData.append('isNewArrival', isNewArrival);
+      formData.append('isTrending', isTrending);
+
+      if (fileInput.files.length > 0) {
+        for (let i = 0; i < fileInput.files.length; i++) {
+          formData.append('images', fileInput.files[i]);
+        }
+      }
+
+      document.getElementById('modal-submit-btn').disabled = true;
+      document.getElementById('modal-submit-btn').textContent = 'Uploading to Cloudinary...';
+
+      const url = prodId ? `/admin/products/${prodId}` : '/admin/products';
+      const method = prodId ? 'PUT' : 'POST';
+
+      try {
+        // Fetch manually because of FormData headers configuration
+        const token = getAuthToken();
+        const response = await fetch(`${API_BASE}${url}`, {
+          method,
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          body: formData
+        });
+        const res = await response.json();
+
+        if (res.success) {
+          showToast('Product catalog saved successfully', 'success');
+          closeProductModal();
+          loadAdminProducts();
+          loadAdminStats(); // Refresh product count
+        } else {
+          showToast(res.message, 'error');
+        }
+      } catch (error) {
+        showToast('Error uploading product. Make sure files are images.', 'error');
+      } finally {
+        document.getElementById('modal-submit-btn').disabled = false;
+        document.getElementById('modal-submit-btn').textContent = 'Save Product';
+      }
+    };
+
+    const deleteProductCatalog = async (prodId) => {
+      if (!confirm('Are you sure you want to delete this product?')) return;
+      try {
+        const res = await apiFetch(`/admin/products/${prodId}`, {
+          method: 'DELETE'
+        });
+        if (res.success) {
+          showToast('Product deleted successfully', 'success');
+          loadAdminProducts();
+          loadAdminStats();
+        }
+      } catch (e) {
+        showToast('Failed to delete product', 'error');
+      }
+    };
+
+    // --- ORDER STATUS UPDATING ---
+    const loadAdminOrders = async () => {
+      try {
+        const res = await apiFetch('/admin/orders');
+        if (res.success) {
+          const body = document.getElementById('admin-orders-table-body');
+          body.innerHTML = res.data.map(order => `
+            <tr>
+              <td style="font-weight:600;">${order._id.substring(0, 10).toUpperCase()}...</td>
+              <td>
+                <strong>${order.user ? order.user.name : 'Guest'}</strong><br>
+                <span style="font-size:0.75rem; color:#888;">${order.user ? order.user.email : ''}</span>
+              </td>
+              <td>₹${order.payableAmount}</td>
+              <td>
+                <span style="font-weight:600; font-size:0.75rem;">${order.paymentMethod}</span><br>
+                <span style="font-size:0.7rem; color:#888;">${order.paymentStatus}</span>
+              </td>
+              <td><span class="order-status-badge ${order.status.toLowerCase()}">${order.status}</span></td>
+              <td>${new Date(order.createdAt).toLocaleDateString()}</td>
+              <td>
+                <button class="admin-action-btn" onclick="openOrderModal('${order._id}', '${order.status}', '${order.trackingNumber || ''}')">Update Status</button>
+              </td>
+            </tr>
+          `).join('');
+        }
+      } catch (e) {
+        showToast('Failed to load orders', 'error');
+      }
+    };
+
+    const openOrderModal = (orderId, currentStatus, trackingNum) => {
+      document.getElementById('order-modal-overlay').classList.add('active');
+      document.getElementById('modal-order-id').value = orderId;
+      document.getElementById('modal-order-status').value = currentStatus;
+      document.getElementById('modal-order-tracking-num').value = trackingNum;
+      document.getElementById('modal-order-tracking-desc').value = '';
+    };
+
+    const closeOrderModal = () => {
+      document.getElementById('order-modal-overlay').classList.remove('active');
+    };
+
+    const handleOrderStatusSubmit = async (e) => {
+      e.preventDefault();
+      const orderId = document.getElementById('modal-order-id').value;
+      const status = document.getElementById('modal-order-status').value;
+      const trackingNumber = document.getElementById('modal-order-tracking-num').value.trim();
+      const trackingDescription = document.getElementById('modal-order-tracking-desc').value.trim();
+
+      try {
+        const res = await apiFetch(`/admin/orders/${orderId}/status`, {
+          method: 'PUT',
+          body: JSON.stringify({ status, trackingNumber, trackingDescription })
+        });
+
+        if (res.success) {
+          showToast('Order status updated successfully', 'success');
+          closeOrderModal();
+          loadAdminOrders();
+          loadAdminStats();
+        } else {
+          showToast(res.message, 'error');
+        }
+      } catch (error) {
+        showToast('Failed to update order status', 'error');
+      }
+    };
+
+    // --- COUPON ACTIONS ---
+    const loadAdminCoupons = async () => {
+      try {
+        const res = await apiFetch('/admin/coupons');
+        if (res.success) {
+          const body = document.getElementById('admin-coupons-table-body');
+          body.innerHTML = res.data.map(cp => `
+            <tr>
+              <td style="font-weight:600; letter-spacing:1px;">${cp.code}</td>
+              <td>${cp.discountType}</td>
+              <td>${cp.discountType === 'flat' ? `₹${cp.discountValue}` : `${cp.discountValue}%`}</td>
+              <td>₹${cp.minCartValue}</td>
+              <td>${new Date(cp.expiryDate).toLocaleDateString()}</td>
+              <td><span style="font-weight:600; color: ${cp.isActive ? 'var(--success-green)' : 'var(--error-red)'};">${cp.isActive ? 'Active' : 'Inactive'}</span></td>
+              <td>
+                <button class="admin-action-btn btn-danger-admin" style="border-color:var(--error-red); color:var(--error-red);" onclick="deleteAdminCoupon('${cp._id}')">Delete</button>
+              </td>
+            </tr>
+          `).join('');
+        }
+      } catch (e) {
+        showToast('Failed to load coupons', 'error');
+      }
+    };
+
+    const createNewCouponCode = async () => {
+      const code = document.getElementById('coupon-code').value.trim();
+      const discountType = document.getElementById('coupon-type').value;
+      const discountValue = document.getElementById('coupon-val').value;
+      const minCartValue = document.getElementById('coupon-min-cart').value;
+      const maxDiscount = document.getElementById('coupon-max-disc').value;
+      const expiryDate = document.getElementById('coupon-expiry').value;
+
+      if (!code || !discountValue || !expiryDate) {
+        showToast('Please fill coupon code, value, and expiry date', 'warning');
+        return;
+      }
+
+      try {
+        const res = await apiFetch('/admin/coupons', {
+          method: 'POST',
+          body: JSON.stringify({
+            code,
+            discountType,
+            discountValue,
+            minCartValue,
+            maxDiscount,
+            expiryDate
+          })
+        });
+
+        if (res.success) {
+          showToast('Coupon created successfully', 'success');
+          // Clear
+          document.getElementById('coupon-code').value = '';
+          document.getElementById('coupon-val').value = '';
+          document.getElementById('coupon-min-cart').value = '';
+          document.getElementById('coupon-max-disc').value = '';
+          document.getElementById('coupon-expiry').value = '';
+
+          loadAdminCoupons();
+        } else {
+          showToast(res.message, 'error');
+        }
+      } catch (error) {
+        showToast('Failed to create coupon code', 'error');
+      }
+    };
+
+    const deleteAdminCoupon = async (couponId) => {
+      if (!confirm('Are you sure you want to delete this coupon?')) return;
+      try {
+        const res = await apiFetch(`/admin/coupons/${couponId}`, {
+          method: 'DELETE'
+        });
+        if (res.success) {
+          showToast('Coupon deleted successfully', 'success');
+          loadAdminCoupons();
+        }
+      } catch (e) {
+        showToast('Failed to delete coupon', 'error');
+      }
+    };
+  </script>
+</body>
+</html>

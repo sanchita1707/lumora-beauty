@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details | LUMORA BEAUTY</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/product.css">
+</head>
+<body>
+
+  <!-- --- HEADER NAVIGATION --- -->
+  <header>
+    <div class="header-container">
+      <a href="index.html" class="logo">LUMORA <span>BEAUTY</span></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop All</a>
+        <a href="shop.html?category=makeup">Makeup</a>
+        <a href="shop.html?category=skincare">Skincare</a>
+        <a href="shop.html?category=fragrance">Fragrance</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="shop.html" class="action-icon" title="Search"><i class="fas fa-search"></i></a>
+        <a href="wishlist.html" class="action-icon" title="Wishlist">
+          <i class="far fa-heart"></i>
+          <span class="badge-count wishlist-badge-count">0</span>
+        </a>
+        <a href="#" class="action-icon" id="header-cart-icon" title="Shopping Bag">
+          <i class="fas fa-shopping-bag"></i>
+          <span class="badge-count cart-badge-count">0</span>
+        </a>
+        <a href="auth.html" class="action-icon" id="header-user-link" title="My Account"><i class="far fa-user"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- --- PRODUCT VIEW SECTION --- -->
+  <main class="product-detail-container" id="product-detail-main">
+    <!-- Main Info Grid -->
+    <div class="product-main-grid" id="product-main-view">
+      <!-- Loading Spinner -->
+      <div style="grid-column: span 2; text-align:center; padding:5rem 0;">
+        <i class="fas fa-spinner fa-spin" style="font-size:3rem; color:var(--primary-rose-gold);"></i>
+      </div>
+    </div>
+
+    <!-- Frequently Bought Together Bundle -->
+    <section class="bundle-container" id="bundle-container" style="display:none;">
+      <h3 class="bundle-title">Frequently Bought Together</h3>
+      <div class="bundle-grid-row" id="bundle-items-row">
+        <!-- Loaded dynamically -->
+      </div>
+    </section>
+
+    <!-- Tabs Block (Description & Reviews) -->
+    <section class="tabs-container">
+      <div class="tab-headers">
+        <div class="tab-header active" data-tab="tab-desc">Product Info</div>
+        <div class="tab-header" data-tab="tab-reviews">Customer Reviews (<span id="tab-reviews-count">0</span>)</div>
+      </div>
+
+      <!-- Description tab -->
+      <div class="tab-content active" id="tab-desc">
+        <div class="card-luxury" id="tab-desc-content" style="color:var(--text-grey); line-height: 1.8;">
+          <!-- Description -->
+        </div>
+      </div>
+
+      <!-- Reviews tab -->
+      <div class="tab-content" id="tab-reviews">
+        <div class="reviews-grid">
+          <!-- Write Review Form -->
+          <div class="review-form-card card-luxury" id="write-review-block">
+            <h4>Leave a Review</h4>
+            <div class="rating-input" id="star-selector">
+              <i class="far fa-star" data-rating="1"></i>
+              <i class="far fa-star" data-rating="2"></i>
+              <i class="far fa-star" data-rating="3"></i>
+              <i class="far fa-star" data-rating="4"></i>
+              <i class="far fa-star" data-rating="5"></i>
+            </div>
+            <textarea id="review-comment" placeholder="Share your experience with this product..."></textarea>
+            <button class="btn btn-primary" onclick="submitUserReview()">Submit Review</button>
+          </div>
+
+          <!-- Reviews List -->
+          <div class="review-list-wrapper">
+            <h4 style="font-family:var(--font-serif); font-size:1.5rem; margin-bottom:1.5rem;">Customer Feedback</h4>
+            <div class="review-list" id="product-reviews-list">
+              <!-- Loaded dynamically -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Products -->
+    <section class="products-section" style="padding:0; margin-top:5rem;">
+      <h2 class="section-title" style="font-size:2rem; text-align:left; margin-bottom:2rem;">Related Products</h2>
+      <div class="products-grid" id="related-products-grid">
+        <!-- Dynamically loaded -->
+      </div>
+    </section>
+  </main>
+
+  <!-- --- FOOTER --- -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="index.html" class="logo" style="margin-bottom:1.5rem; display:block;">
+          LUMORA <span>BEAUTY</span>
+        </a>
+        <p>A premium curation of botanical skincare, rich silk makeup, organic hair oils, and oriental perfumes designed to elevate your everyday beauty rituals into royal experiences.</p>
+        <div class="footer-socials">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-pinterest-p"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <h4>Discover</h4>
+        <ul>
+          <li><a href="shop.html">Shop All Products</a></li>
+          <li><a href="shop.html?category=makeup">Makeup Palettes</a></li>
+          <li><a href="shop.html?category=skincare">Skincare Serums</a></li>
+          <li><a href="shop.html?category=fragrance">Luxury Scents</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links">
+        <h4>Customer Care</h4>
+        <ul>
+          <li><a href="dashboard.html">Order Tracking</a></li>
+          <li><a href="wishlist.html">My Wishlist</a></li>
+          <li><a href="#">Shipping Policy</a></li>
+          <li><a href="#">Returns & Exchanges</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-newsletter">
+        <h4>Newsletter</h4>
+        <p>Subscribe to receive luxury launch updates, private sales, and beauty tutorials.</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Your Email Address" required>
+          <button type="submit">Subscribe</button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 LUMORA BEAUTY. All Rights Reserved.</p>
+      <div>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- --- CART SLIDE PANEL --- -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <div class="cart-panel" id="cart-panel">
+    <div class="cart-header">
+      <h3>Your Bag</h3>
+      <button class="cart-close-btn" id="cart-close-btn"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items-wrapper" id="cart-drawer-items">
+      <!-- Dynamic list -->
+    </div>
+    <div class="cart-footer">
+      <div class="cart-summary-row">
+        <span>Subtotal</span>
+        <span id="cart-drawer-subtotal">₹0</span>
+      </div>
+      <div class="cart-total-row">
+        <span>Total Payable</span>
+        <span id="cart-drawer-total">₹0</span>
+      </div>
+      <a href="checkout.html" class="btn btn-gold cart-checkout-btn">Proceed To Checkout</a>
+    </div>
+  </div>
+
+  <!-- --- JAVASCRIPT --- -->
+  <script src="js/main.js"></script>
+  <script>
+    let activeProduct = null;
+    let selectedRating = 0;
+    let bundleProductsList = [];
+
+    // --- TAB SWITCHING ---
+    const tabHeaders = document.querySelectorAll('.tab-header');
+    tabHeaders.forEach(th => {
+      th.addEventListener('click', () => {
+        tabHeaders.forEach(t => t.classList.remove('active'));
+        th.classList.add('active');
+        
+        const tabId = th.getAttribute('data-tab');
+        document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+
+    // --- STAR SELECTOR ---
+    const stars = document.querySelectorAll('#star-selector i');
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        selectedRating = Number(star.getAttribute('data-rating'));
+        stars.forEach((s, idx) => {
+          if (idx < selectedRating) {
+            s.className = 'fas fa-star active';
+          } else {
+            s.className = 'far fa-star';
+          }
+        });
+      });
+    });
+
+    // --- ZOOM MAGNIFIER FUNCTION ---
+    const enableZoom = () => {
+      const container = document.querySelector('.product-zoom-container');
+      const img = document.querySelector('.product-zoom-img');
+      if (!container || !img) return;
+
+      container.addEventListener('mousemove', (e) => {
+        const rect = container.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const xPercent = (x / rect.width) * 100;
+        const yPercent = (y / rect.height) * 100;
+        
+        img.style.transformOrigin = `${xPercent}% ${yPercent}%`;
+        img.style.transform = 'scale(2)';
+      });
+
+      container.addEventListener('mouseleave', () => {
+        img.style.transform = 'scale(1)';
+        img.style.transformOrigin = 'center center';
+      });
+    };
+
+    // --- FETCH PRODUCT DETAILS ---
+    document.addEventListener('DOMContentLoaded', async () => {
+      const params = new URLSearchParams(window.location.search);
+      const prodId = params.get('id');
+
+      if (!prodId) {
+        window.location.href = '/shop.html';
+        return;
+      }
+
+      // Check if user is logged in to show review submit
+      const user = getAuthUser();
+      if (!user) {
+        document.getElementById('write-review-block').innerHTML = `
+          <div style="text-align:center; padding:1.5rem 0;">
+            <p style="margin-bottom:1rem; font-weight:500;">Please log in to leave a product review.</p>
+            <a href="/auth.html" class="btn btn-outline" style="font-size:0.75rem;">Login / Register</a>
+          </div>
+        `;
+      }
+
+      try {
+        const res = await apiFetch(`/products/${prodId}`);
+        if (res.success) {
+          activeProduct = res.data;
+          renderProductMain(activeProduct);
+          renderDescriptionTab(activeProduct);
+          renderReviews(activeProduct._id);
+          renderRelated(activeProduct.relatedProducts);
+          renderBundle(activeProduct, activeProduct.frequentlyBoughtTogether);
+          enableZoom();
+          loadWishlist(); // Sync wishlist state
+        } else {
+          showToast(res.message, 'error');
+        }
+      } catch (error) {
+        showToast('Error fetching product details', 'error');
+      }
+    });
+
+    const renderProductMain = (prod) => {
+      const mainGrid = document.getElementById('product-main-view');
+      const origPrice = prod.price;
+      const discount = prod.discount || 0;
+      const curPrice = Math.round(origPrice * (1 - discount / 100));
+
+      mainGrid.innerHTML = `
+        <!-- Left Column: Gallery -->
+        <div class="product-gallery">
+          <div class="gallery-thumbs">
+            ${prod.images.map((img, i) => `
+              <img src="${img}" alt="${prod.name} thumb ${i+1}" class="thumb-img ${i === 0 ? 'active' : ''}" onclick="switchGalleryImage('${img}', this)">
+            `).join('')}
+          </div>
+          <div class="product-zoom-container">
+            <img src="${prod.images[0]}" alt="${prod.name}" class="product-zoom-img" id="main-product-zoom-img">
+          </div>
+        </div>
+
+        <!-- Right Column: Details -->
+        <div class="product-info-block">
+          <span class="prod-brand">${prod.brand}</span>
+          <h1 class="prod-title">${prod.name}</h1>
+          
+          <div class="prod-rating-row">
+            <div class="prod-stars">
+              ${renderStarRating(prod.rating)}
+            </div>
+            <span class="prod-reviews-count">${prod.rating} ★ (${prod.numReviews} Reviews)</span>
+          </div>
+
+          <div class="prod-price-block">
+            <span class="prod-price-curr">₹${curPrice}</span>
+            ${discount > 0 ? `<span class="prod-price-orig">₹${origPrice}</span>` : ''}
+            ${discount > 0 ? `<span class="prod-discount">-${discount}% OFF</span>` : ''}
+          </div>
+
+          <p class="prod-description">${prod.description.substring(0, 180)}...</p>
+
+          <div class="prod-meta-list">
+            <div class="prod-meta-item"><strong>Availability:</strong> ${prod.stock > 0 ? `<span style="color:var(--success-green); font-weight:600;">In Stock (${prod.stock} left)</span>` : '<span style="color:var(--error-red);">Out of Stock</span>'}</div>
+            <div class="prod-meta-item"><strong>Category:</strong> ${prod.category ? prod.category.name : 'Cosmetics'}</div>
+            <div class="prod-meta-item"><strong>Tags:</strong> ${prod.tags.join(', ')}</div>
+          </div>
+
+          ${prod.stock > 0 ? `
+            <div class="buy-box">
+              <div class="qty-selector">
+                <button class="qty-btn" onclick="changeQtyValue(-1)">-</button>
+                <div class="qty-val" id="qty-display-val">1</div>
+                <button class="qty-btn" onclick="changeQtyValue(1)">+</button>
+              </div>
+              <button class="btn btn-primary" onclick="handleAddActiveToBag()">Add To Bag</button>
+            </div>
+          ` : `
+            <button class="btn btn-outline" style="cursor:not-allowed;" disabled>Out Of Stock</button>
+          `}
+        </div>
+      `;
+    };
+
+    const renderStarRating = (rating) => {
+      let html = '';
+      const full = Math.floor(rating);
+      const half = rating % 1 >= 0.5;
+      for (let i = 1; i <= 5; i++) {
+        if (i <= full) html += '<i class="fas fa-star"></i>';
+        else if (i === full + 1 && half) html += '<i class="fas fa-star-half-alt"></i>';
+        else html += '<i class="far fa-star"></i>';
+      }
+      return html;
+    };
+
+    const switchGalleryImage = (src, element) => {
+      document.getElementById('main-product-zoom-img').src = src;
+      document.querySelectorAll('.thumb-img').forEach(t => t.classList.remove('active'));
+      element.classList.add('active');
+    };
+
+    const changeQtyValue = (delta) => {
+      const valDiv = document.getElementById('qty-display-val');
+      let val = Number(valDiv.textContent) + delta;
+      if (val < 1) val = 1;
+      if (val > activeProduct.stock) {
+        val = activeProduct.stock;
+        showToast(`Only ${activeProduct.stock} items left in stock`, 'warning');
+      }
+      valDiv.textContent = val;
+    };
+
+    const handleAddActiveToBag = () => {
+      const qty = Number(document.getElementById('qty-display-val').textContent);
+      addToCart(activeProduct, qty);
+    };
+
+    const renderDescriptionTab = (prod) => {
+      document.getElementById('tab-desc-content').innerHTML = `
+        <h4 style="font-family:var(--font-serif); font-size:1.3rem; margin-bottom:1rem; color:var(--luxury-black);">About the Product</h4>
+        <p style="margin-bottom:1.5rem;">${prod.description}</p>
+        <h4 style="font-family:var(--font-serif); font-size:1.3rem; margin-bottom:1rem; color:var(--luxury-black);">Key Benefits & Formulation</h4>
+        <ul style="list-style-type:disc; padding-left:1.5rem; margin-bottom:1.5rem; display:flex; flex-direction:column; gap:0.5rem;">
+          <li>Clinically tested luxury formula crafted by expert dermatologists.</li>
+          <li>Rich in antioxidants, botanical extracts, and natural active ingredients.</li>
+          <li>100% cruelty-free, paraben-free, and vegan-certified.</li>
+          <li>Designed for sensitive and all skin / hair types.</li>
+        </ul>
+      `;
+    };
+
+    // --- REVIEWS LOAD & SUBMIT ---
+    const renderReviews = async (productId) => {
+      try {
+        const res = await fetch(`/api/reviews/product/${productId}`);
+        const data = await res.json();
+        
+        if (data.success) {
+          const list = document.getElementById('product-reviews-list');
+          document.getElementById('tab-reviews-count').textContent = data.data.length;
+
+          if (data.data.length === 0) {
+            list.innerHTML = `<p style="color:#888;">No reviews yet. Be the first to review this product!</p>`;
+          } else {
+            list.innerHTML = data.data.map(rev => `
+              <div class="review-item">
+                <div class="review-item-header">
+                  <span class="review-user">${rev.name}</span>
+                  <span class="review-date">${new Date(rev.createdAt).toLocaleDateString()}</span>
+                </div>
+                <div class="prod-stars" style="margin-bottom:0.5rem; font-size:0.8rem; color:#ffb400;">
+                  ${renderStarRating(rev.rating)}
+                </div>
+                <p class="review-text">${rev.comment}</p>
+              </div>
+            `).join('');
+          }
+        }
+      } catch (e) {
+        console.error('Error loading reviews:', e);
+      }
+    };
+
+    const submitUserReview = async () => {
+      const comment = document.getElementById('review-comment').value.trim();
+      if (selectedRating === 0) {
+        showToast('Please select a star rating', 'warning');
+        return;
+      }
+      if (!comment) {
+        showToast('Please write a comment', 'warning');
+        return;
+      }
+
+      try {
+        const res = await apiFetch('/reviews', {
+          method: 'POST',
+          body: JSON.stringify({
+            rating: selectedRating,
+            comment,
+            productId: activeProduct._id
+          })
+        });
+
+        if (res.success) {
+          showToast(res.message, 'success');
+          document.getElementById('review-comment').value = '';
+          selectedRating = 0;
+          stars.forEach(s => s.className = 'far fa-star');
+          renderReviews(activeProduct._id);
+          
+          // Reload page product stats
+          const prodRes = await apiFetch(`/products/${activeProduct._id}`);
+          if (prodRes.success) {
+            activeProduct = prodRes.data;
+            renderProductMain(activeProduct);
+            enableZoom();
+          }
+        } else {
+          showToast(res.message, 'error');
+        }
+      } catch (error) {
+        showToast('Failed to submit review', 'error');
+      }
+    };
+
+    // --- RELATED PRODUCTS ---
+    const renderRelated = (related) => {
+      const grid = document.getElementById('related-products-grid');
+      if (!related || related.length === 0) {
+        grid.innerHTML = `<p style="color:#888;">No related products found.</p>`;
+        return;
+      }
+
+      grid.innerHTML = related.map(prod => {
+        const originalPrice = prod.price;
+        const discount = prod.discount || 0;
+        const currentPrice = Math.round(originalPrice * (1 - discount / 100));
+
+        return `
+          <div class="product-card">
+            <a href="product.html?id=${prod._id}" class="product-img-wrapper">
+              <img src="${prod.images[0]}" alt="${prod.name}" class="product-img-primary">
+              <img src="${prod.images[1] || prod.images[0]}" alt="${prod.name}" class="product-img-secondary">
+              <div class="product-quick-view">View details</div>
+            </a>
+            <div class="product-details">
+              <span class="product-category">${prod.brand}</span>
+              <h3 class="product-name"><a href="product.html?id=${prod._id}">${prod.name}</a></h3>
+              <div class="product-price-row">
+                <span class="price-current">₹${currentPrice}</span>
+                ${discount > 0 ? `<span class="price-original">₹${originalPrice}</span>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    };
+
+    // --- FREQUENTLY BOUGHT TOGETHER BUNDLE ---
+    const renderBundle = (currentProduct, bundleProds) => {
+      if (!bundleProds || bundleProds.length === 0) return;
+
+      const container = document.getElementById('bundle-container');
+      const row = document.getElementById('bundle-items-row');
+      container.style.display = 'block';
+
+      // Bundle list starts with current product
+      bundleProductsList = [currentProduct, ...bundleProds];
+
+      row.innerHTML = `
+        <!-- Main Product -->
+        <div class="bundle-product">
+          <label style="cursor:pointer; display:flex; flex-direction:column; align-items:center;">
+            <img src="${currentProduct.images[0]}" alt="${currentProduct.name}" class="bundle-product-img">
+            <input type="checkbox" checked disabled style="accent-color:var(--primary-rose-gold); margin-bottom:0.5rem;" data-idx="0" onchange="recalcBundleTotal()">
+            <h4 class="bundle-product-name">${currentProduct.name}</h4>
+            <div class="bundle-product-price">₹${Math.round(currentProduct.price * (1 - (currentProduct.discount || 0) / 100))}</div>
+          </label>
+        </div>
+
+        ${bundleProds.map((prod, idx) => `
+          <div class="bundle-plus">+</div>
+          <div class="bundle-product">
+            <label style="cursor:pointer; display:flex; flex-direction:column; align-items:center;">
+              <img src="${prod.images[0]}" alt="${prod.name}" class="bundle-product-img">
+              <input type="checkbox" checked style="accent-color:var(--primary-rose-gold); margin-bottom:0.5rem;" data-idx="${idx+1}" onchange="recalcBundleTotal()">
+              <h4 class="bundle-product-name">${prod.name}</h4>
+              <div class="bundle-product-price">₹${Math.round(prod.price * (1 - (prod.discount || 0) / 100))}</div>
+            </label>
+          </div>
+        `).join('')}
+
+        <!-- Checkout Summary -->
+        <div class="bundle-checkout-block">
+          <div style="font-size:0.85rem; color:var(--text-grey);">Selected Bundle Items:</div>
+          <div class="bundle-total-price" id="bundle-total-price-text">₹0</div>
+          <button class="btn btn-gold" style="font-size:0.75rem;" onclick="addBundleToBag()">Add Bundle to Bag</button>
+        </div>
+      `;
+
+      recalcBundleTotal();
+    };
+
+    const recalcBundleTotal = () => {
+      const checkboxes = document.querySelectorAll('#bundle-items-row input[type="checkbox"]');
+      let total = 0;
+      checkboxes.forEach(cb => {
+        if (cb.checked) {
+          const idx = Number(cb.getAttribute('data-idx'));
+          const prod = bundleProductsList[idx];
+          total += Math.round(prod.price * (1 - (prod.discount || 0) / 100));
+        }
+      });
+      document.getElementById('bundle-total-price-text').textContent = `Total: ₹${total}`;
+    };
+
+    const addBundleToBag = () => {
+      const checkboxes = document.querySelectorAll('#bundle-items-row input[type="checkbox"]');
+      let count = 0;
+      checkboxes.forEach(cb => {
+        if (cb.checked) {
+          const idx = Number(cb.getAttribute('data-idx'));
+          const prod = bundleProductsList[idx];
+          // Mock stock parameter mapping
+          addToCart(prod, 1, false);
+          count++;
+        }
+      });
+      if (count > 0) {
+        showToast(`Added ${count} bundle items to bag`, 'success');
+        openCartDrawer();
+      }
+    };
+  </script>
+</body>
+</html>

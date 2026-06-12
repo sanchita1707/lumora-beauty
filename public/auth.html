@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login & Register | LUMORA BEAUTY</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .auth-page-container {
+      max-width: 500px;
+      margin: calc(var(--header-height) + 3rem) auto 5rem;
+      padding: 0 1.5rem;
+    }
+    .auth-card {
+      background: var(--luxury-white);
+      border: 1px solid var(--border-grey);
+      padding: 3rem 2.5rem;
+      box-shadow: var(--shadow-md);
+      position: relative;
+    }
+    .auth-card h3 {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      text-align: center;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      color: var(--luxury-black);
+    }
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .auth-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .auth-group label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+    .auth-group input {
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border-grey);
+      font-size: 0.9rem;
+      transition: var(--transition-fast);
+    }
+    .auth-group input:focus {
+      border-color: var(--primary-rose-gold);
+      background-color: var(--cream-bg);
+    }
+    .auth-switch-text {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-grey);
+      margin-top: 1.8rem;
+    }
+    .auth-switch-text span {
+      color: var(--primary-rose-gold);
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .auth-switch-text span:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- --- HEADER NAVIGATION --- -->
+  <header>
+    <div class="header-container">
+      <a href="index.html" class="logo">LUMORA <span>BEAUTY</span></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop All</a>
+        <a href="shop.html?category=makeup">Makeup</a>
+        <a href="shop.html?category=skincare">Skincare</a>
+        <a href="shop.html?category=fragrance">Fragrance</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="shop.html" class="action-icon" title="Search"><i class="fas fa-search"></i></a>
+        <a href="wishlist.html" class="action-icon" title="Wishlist">
+          <i class="far fa-heart"></i>
+          <span class="badge-count wishlist-badge-count">0</span>
+        </a>
+        <a href="#" class="action-icon" id="header-cart-icon" title="Shopping Bag"><i class="fas fa-shopping-bag"></i></a>
+        <a href="auth.html" class="action-icon active" id="header-user-link" title="My Account"><i class="far fa-user"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- --- AUTHENTICATION CARDS --- -->
+  <main class="auth-page-container">
+    
+    <!-- LOGIN CARD -->
+    <div class="auth-card" id="login-card">
+      <h3>Sign In</h3>
+      <div class="auth-form">
+        <div class="auth-group">
+          <label>Email Address</label>
+          <input type="email" id="login-email" placeholder="email@example.com" required>
+        </div>
+        <div class="auth-group">
+          <label>Password</label>
+          <input type="password" id="login-password" placeholder="••••••••" required>
+        </div>
+        <button class="btn btn-primary" style="margin-top: 1rem;" onclick="handleLoginSubmit()">Sign In</button>
+      </div>
+      <p class="auth-switch-text">Don't have an account? <span onclick="toggleAuthForms('register')">Create Account</span></p>
+    </div>
+
+    <!-- REGISTRATION CARD -->
+    <div class="auth-card" id="register-card" style="display:none;">
+      <h3>Create Account</h3>
+      <div class="auth-form">
+        <div class="auth-group">
+          <label>Full Name</label>
+          <input type="text" id="reg-name" placeholder="Sanchita Sen" required>
+        </div>
+        <div class="auth-group">
+          <label>Email Address</label>
+          <input type="email" id="reg-email" placeholder="email@example.com" required>
+        </div>
+        <div class="auth-group">
+          <label>Phone Number</label>
+          <input type="tel" id="reg-phone" placeholder="9876543210" required>
+        </div>
+        <div class="auth-group">
+          <label>Password</label>
+          <input type="password" id="reg-password" placeholder="••••••••" required>
+        </div>
+        <button class="btn btn-primary" style="margin-top: 1rem;" onclick="handleRegisterSubmit()">Register</button>
+      </div>
+      <p class="auth-switch-text">Already have an account? <span onclick="toggleAuthForms('login')">Sign In</span></p>
+    </div>
+
+  </main>
+
+  <!-- --- FOOTER --- -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="index.html" class="logo" style="margin-bottom:1.5rem; display:block;">
+          LUMORA <span>BEAUTY</span>
+        </a>
+        <p>A premium curation of botanical skincare, rich silk makeup, organic hair oils, and oriental perfumes designed to elevate your everyday beauty rituals into royal experiences.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- --- JAVASCRIPT --- -->
+  <script src="js/main.js"></script>
+  <script>
+    // Redirect if already logged in
+    if (getAuthUser()) {
+      window.location.href = '/dashboard.html';
+    }
+
+    const toggleAuthForms = (mode) => {
+      const login = document.getElementById('login-card');
+      const register = document.getElementById('register-card');
+
+      if (mode === 'register') {
+        login.style.display = 'none';
+        register.style.display = 'block';
+      } else {
+        login.style.display = 'block';
+        register.style.display = 'none';
+      }
+    };
+
+    // --- FORM ACTIONS ---
+    const getRedirectParam = () => {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('redirect') || 'dashboard.html';
+    };
+
+    const handleLoginSubmit = async () => {
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      if (!email || !password) {
+        showToast('Please fill in all fields', 'warning');
+        return;
+      }
+
+      try {
+        const res = await apiFetch('/auth/login', {
+          method: 'POST',
+          body: JSON.stringify({ email, password })
+        });
+
+        if (res.success) {
+          setAuthState(res.token, {
+            _id: res._id,
+            name: res.name,
+            email: res.email,
+            role: res.role,
+            phone: res.phone
+          });
+
+          showToast('Welcome back to Lumora Beauty!', 'success');
+          setTimeout(() => {
+            window.location.href = getRedirectParam();
+          }, 1500);
+        } else {
+          showToast(res.message, 'error');
+        }
+      } catch (e) {
+        showToast('Login failed. Connection error.', 'error');
+      }
+    };
+
+    const handleRegisterSubmit = async () => {
+      const name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const phone = document.getElementById('reg-phone').value.trim();
+      const password = document.getElementById('reg-password').value;
+
+      if (!name || !email || !phone || !password) {
+        showToast('Please fill in all fields', 'warning');
+        return;
+      }
+
+      try {
+        const res = await apiFetch('/auth/register', {
+          method: 'POST',
+          body: JSON.stringify({ name, email, phone, password })
+        });
+
+        if (res.success) {
+          setAuthState(res.token, {
+            _id: res._id,
+            name: res.name,
+            email: res.email,
+            role: res.role,
+            phone: res.phone
+          });
+
+          showToast('Account created successfully!', 'success');
+          setTimeout(() => {
+            window.location.href = getRedirectParam();
+          }, 1500);
+        } else {
+          showToast(res.message, 'error');
+        }
+      } catch (e) {
+        showToast('Registration failed. Connection error.', 'error');
+      }
+    };
+  </script>
+</body>
+</html>

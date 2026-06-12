@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop Collections | LUMORA BEAUTY</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/shop.css">
+</head>
+<body>
+
+  <!-- --- HEADER NAVIGATION --- -->
+  <header>
+    <div class="header-container">
+      <a href="index.html" class="logo">LUMORA <span>BEAUTY</span></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html" class="active">Shop All</a>
+        <a href="shop.html?category=makeup">Makeup</a>
+        <a href="shop.html?category=skincare">Skincare</a>
+        <a href="shop.html?category=fragrance">Fragrance</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="shop.html" class="action-icon" title="Search"><i class="fas fa-search"></i></a>
+        <a href="wishlist.html" class="action-icon" title="Wishlist">
+          <i class="far fa-heart"></i>
+          <span class="badge-count wishlist-badge-count">0</span>
+        </a>
+        <a href="#" class="action-icon" id="header-cart-icon" title="Shopping Bag">
+          <i class="fas fa-shopping-bag"></i>
+          <span class="badge-count cart-badge-count">0</span>
+        </a>
+        <a href="auth.html" class="action-icon" id="header-user-link" title="My Account"><i class="far fa-user"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- --- SHOP PAGE CONTENT --- -->
+  <div class="shop-page-container">
+    
+    <!-- Sidebar Filters -->
+    <aside class="shop-sidebar">
+      <!-- Search Filter -->
+      <div class="filter-group">
+        <h3 class="filter-title">Search</h3>
+        <div class="search-box">
+          <input type="text" id="search-input" placeholder="Search products...">
+          <i class="fas fa-search" style="cursor: pointer;" onclick="triggerSearch()"></i>
+        </div>
+      </div>
+
+      <!-- Categories Filter -->
+      <div class="filter-group">
+        <h3 class="filter-title">Categories</h3>
+        <ul class="filter-list" id="category-filter-list">
+          <li class="filter-list-item active" data-slug="all">All Products</li>
+          <li class="filter-list-item" data-slug="makeup">Makeup</li>
+          <li class="filter-list-item" data-slug="skincare">Skincare</li>
+          <li class="filter-list-item" data-slug="haircare">Haircare</li>
+          <li class="filter-list-item" data-slug="fragrance">Fragrance</li>
+          <li class="filter-list-item" data-slug="bath-body">Bath & Body</li>
+        </ul>
+      </div>
+
+      <!-- Price Range Filter -->
+      <div class="filter-group">
+        <h3 class="filter-title">Price (INR)</h3>
+        <div class="price-inputs">
+          <input type="number" id="min-price-input" placeholder="Min" min="0">
+          <span>to</span>
+          <input type="number" id="max-price-input" placeholder="Max" min="0">
+        </div>
+      </div>
+
+      <!-- Ratings Filter -->
+      <div class="filter-group">
+        <h3 class="filter-title">Customer Rating</h3>
+        <ul class="filter-list" id="rating-filter-list">
+          <li class="filter-list-item" data-rating="4.5">4.5★ & Above</li>
+          <li class="filter-list-item" data-rating="4.0">4.0★ & Above</li>
+          <li class="filter-list-item" data-rating="3.5">3.5★ & Above</li>
+        </ul>
+      </div>
+
+      <!-- Apply Filters Button -->
+      <button class="btn btn-primary" style="width: 100%; font-size: 0.75rem;" onclick="applyFilters()">Apply Filters</button>
+      <button class="btn btn-outline" style="width: 100%; font-size: 0.75rem; margin-top: 0.8rem;" onclick="clearAllFilters()">Clear Filters</button>
+    </aside>
+
+    <!-- Main Products Grid -->
+    <main>
+      <!-- Sort Header -->
+      <div class="shop-content-header">
+        <span class="results-count" id="results-count-text">Showing 0 products</span>
+        <div class="sort-dropdown">
+          <select id="sort-select" onchange="applyFilters()">
+            <option value="newest">Sort By: Newest Arrivals</option>
+            <option value="priceAsc">Sort By: Price (Low to High)</option>
+            <option value="priceDesc">Sort By: Price (High to Low)</option>
+            <option value="rating">Sort By: Top Rated</option>
+            <option value="discount">Sort By: Best Discounts</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="products-grid" id="shop-products-grid">
+        <!-- Loader / Products dynamic list -->
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="shop-pagination">
+        <!-- Pagination controls -->
+      </div>
+    </main>
+
+  </div>
+
+  <!-- --- FOOTER --- -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="index.html" class="logo" style="margin-bottom:1.5rem; display:block;">
+          LUMORA <span>BEAUTY</span>
+        </a>
+        <p>A premium curation of botanical skincare, rich silk makeup, organic hair oils, and oriental perfumes designed to elevate your everyday beauty rituals into royal experiences.</p>
+        <div class="footer-socials">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-pinterest-p"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <h4>Discover</h4>
+        <ul>
+          <li><a href="shop.html">Shop All Products</a></li>
+          <li><a href="shop.html?category=makeup">Makeup Palettes</a></li>
+          <li><a href="shop.html?category=skincare">Skincare Serums</a></li>
+          <li><a href="shop.html?category=fragrance">Luxury Scents</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links">
+        <h4>Customer Care</h4>
+        <ul>
+          <li><a href="dashboard.html">Order Tracking</a></li>
+          <li><a href="wishlist.html">My Wishlist</a></li>
+          <li><a href="#">Shipping Policy</a></li>
+          <li><a href="#">Returns & Exchanges</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-newsletter">
+        <h4>Newsletter</h4>
+        <p>Subscribe to receive luxury launch updates, private sales, and beauty tutorials.</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Your Email Address" required>
+          <button type="submit">Subscribe</button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 LUMORA BEAUTY. All Rights Reserved.</p>
+      <div>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- --- CART SLIDE PANEL --- -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <div class="cart-panel" id="cart-panel">
+    <div class="cart-header">
+      <h3>Your Bag</h3>
+      <button class="cart-close-btn" id="cart-close-btn"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items-wrapper" id="cart-drawer-items">
+      <!-- Dynamic list -->
+    </div>
+    <div class="cart-footer">
+      <div class="cart-summary-row">
+        <span>Subtotal</span>
+        <span id="cart-drawer-subtotal">₹0</span>
+      </div>
+      <div class="cart-total-row">
+        <span>Total Payable</span>
+        <span id="cart-drawer-total">₹0</span>
+      </div>
+      <a href="checkout.html" class="btn btn-gold cart-checkout-btn">Proceed To Checkout</a>
+    </div>
+  </div>
+
+  <!-- --- JAVASCRIPT --- -->
+  <script src="js/main.js"></script>
+  <script>
+    // --- FILTER PARSING & FETCH STATE ---
+    let currentFilters = {
+      category: 'all',
+      search: '',
+      minPrice: '',
+      maxPrice: '',
+      rating: '',
+      sort: 'newest',
+      page: 1
+    };
+
+    // Category list bindings
+    const catItems = document.querySelectorAll('#category-filter-list .filter-list-item');
+    catItems.forEach(item => {
+      item.addEventListener('click', () => {
+        catItems.forEach(c => c.classList.remove('active'));
+        item.classList.add('active');
+        currentFilters.category = item.getAttribute('data-slug');
+        currentFilters.page = 1;
+        fetchShopProducts();
+      });
+    });
+
+    // Rating bindings
+    const ratingItems = document.querySelectorAll('#rating-filter-list .filter-list-item');
+    ratingItems.forEach(item => {
+      item.addEventListener('click', () => {
+        if (item.classList.contains('active')) {
+          item.classList.remove('active');
+          currentFilters.rating = '';
+        } else {
+          ratingItems.forEach(r => r.classList.remove('active'));
+          item.classList.add('active');
+          currentFilters.rating = item.getAttribute('data-rating');
+        }
+        currentFilters.page = 1;
+        fetchShopProducts();
+      });
+    });
+
+    // Search enter press
+    document.getElementById('search-input').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        triggerSearch();
+      }
+    });
+
+    const triggerSearch = () => {
+      currentFilters.search = document.getElementById('search-input').value.trim();
+      currentFilters.page = 1;
+      fetchShopProducts();
+    };
+
+    const applyFilters = () => {
+      currentFilters.minPrice = document.getElementById('min-price-input').value;
+      currentFilters.maxPrice = document.getElementById('max-price-input').value;
+      currentFilters.sort = document.getElementById('sort-select').value;
+      currentFilters.page = 1;
+      fetchShopProducts();
+    };
+
+    const clearAllFilters = () => {
+      document.getElementById('search-input').value = '';
+      document.getElementById('min-price-input').value = '';
+      document.getElementById('max-price-input').value = '';
+      document.getElementById('sort-select').value = 'newest';
+      
+      catItems.forEach(c => c.classList.remove('active'));
+      document.querySelector('#category-filter-list [data-slug="all"]').classList.add('active');
+      
+      ratingItems.forEach(r => r.classList.remove('active'));
+
+      currentFilters = {
+        category: 'all',
+        search: '',
+        minPrice: '',
+        maxPrice: '',
+        rating: '',
+        sort: 'newest',
+        page: 1
+      };
+      fetchShopProducts();
+    };
+
+    const changePage = (page) => {
+      currentFilters.page = page;
+      fetchShopProducts();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    // --- FETCH DATA FROM BACKEND API ---
+    const fetchShopProducts = async () => {
+      const grid = document.getElementById('shop-products-grid');
+      grid.innerHTML = `<div style="grid-column:span 3; text-align:center; padding:5rem 0;"><i class="fas fa-spinner fa-spin" style="font-size:2rem; color:var(--primary-rose-gold);"></i></div>`;
+
+      // Build query string
+      const queryParams = new URLSearchParams();
+      if (currentFilters.category !== 'all') queryParams.append('category', currentFilters.category);
+      if (currentFilters.search) queryParams.append('search', currentFilters.search);
+      if (currentFilters.minPrice) queryParams.append('minPrice', currentFilters.minPrice);
+      if (currentFilters.maxPrice) queryParams.append('maxPrice', currentFilters.maxPrice);
+      if (currentFilters.rating) queryParams.append('rating', currentFilters.rating);
+      if (currentFilters.sort) queryParams.append('sort', currentFilters.sort);
+      queryParams.append('page', currentFilters.page);
+      queryParams.append('limit', '9'); // 9 products per page
+
+      try {
+        const response = await fetch(`/api/products?${queryParams.toString()}`);
+        const resData = await response.json();
+
+        if (resData.success) {
+          renderProducts(resData.data);
+          renderPagination(resData.page, resData.pages);
+          document.getElementById('results-count-text').textContent = `Showing ${resData.total} products`;
+        }
+      } catch (error) {
+        grid.innerHTML = `<p style="grid-column:span 3; text-align:center; color:red;">Error loading products. Please try again.</p>`;
+      }
+    };
+
+    const renderProducts = (products) => {
+      const grid = document.getElementById('shop-products-grid');
+      if (products.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: span 3; text-align:center; padding:5rem 0; color:#888;">
+            <i class="fas fa-search-minus" style="font-size:3rem; margin-bottom:1rem;"></i>
+            <p>We couldn't find any products matching your criteria.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = products.map(prod => {
+        const originalPrice = prod.price;
+        const discount = prod.discount || 0;
+        const currentPrice = Math.round(originalPrice * (1 - discount / 100));
+        
+        return `
+          <div class="product-card">
+            <div class="product-badge-group">
+              ${discount > 0 ? `<div class="product-badge badge-discount">-${discount}%</div>` : ''}
+              ${prod.isNewArrival ? `<div class="product-badge badge-new">New</div>` : ''}
+            </div>
+            
+            <button class="product-fav-btn ${isInWishlist(prod._id) ? 'active' : ''}" data-id="${prod._id}" 
+              onclick="event.preventDefault(); handleToggleFav('${prod._id}', this)">
+              <i class="fas fa-heart"></i>
+            </button>
+            
+            <a href="product.html?id=${prod._id}" class="product-img-wrapper">
+              <img src="${prod.images[0]}" alt="${prod.name}" class="product-img-primary">
+              <img src="${prod.images[1] || prod.images[0]}" alt="${prod.name}" class="product-img-secondary">
+              <div class="product-quick-view">Quick Details</div>
+            </a>
+            
+            <div class="product-details">
+              <span class="product-category">${prod.category ? prod.category.name : 'Cosmetics'}</span>
+              <h3 class="product-name"><a href="product.html?id=${prod._id}">${prod.name}</a></h3>
+              
+              <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <span>${prod.rating} (${prod.numReviews})</span>
+              </div>
+              
+              <div class="product-price-row">
+                <span class="price-current">₹${currentPrice}</span>
+                ${discount > 0 ? `<span class="price-original">₹${originalPrice}</span>` : ''}
+              </div>
+              
+              <button class="btn btn-primary" style="margin-top:1.5rem; width:100%; font-size:0.75rem;" 
+                onclick="event.preventDefault(); handleAddToCart('${encodeURIComponent(JSON.stringify(prod))}')">
+                Add To Bag
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    };
+
+    const renderPagination = (currentPage, totalPages) => {
+      const container = document.getElementById('shop-pagination');
+      if (totalPages <= 1) {
+        container.innerHTML = '';
+        return;
+      }
+
+      let html = '';
+      for (let i = 1; i <= totalPages; i++) {
+        html += `
+          <button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">
+            ${i}
+          </button>
+        `;
+      }
+      container.innerHTML = html;
+    };
+
+    // Helper bindings
+    const handleAddToCart = (encodedProduct) => {
+      const product = JSON.parse(decodeURIComponent(encodedProduct));
+      addToCart(product, 1);
+    };
+
+    const handleToggleFav = (prodId, element) => {
+      toggleWishlist({ _id: prodId });
+      element.classList.toggle('active');
+    };
+
+    // Parse URL params on load
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const catParam = params.get('category');
+      const searchParam = params.get('search');
+      
+      if (catParam) {
+        currentFilters.category = catParam;
+        // Mark active list item in UI
+        catItems.forEach(item => {
+          if (item.getAttribute('data-slug') === catParam) {
+            catItems.forEach(c => c.classList.remove('active'));
+            item.classList.add('active');
+          }
+        });
+      }
+
+      if (searchParam) {
+        currentFilters.search = searchParam;
+        document.getElementById('search-input').value = searchParam;
+      }
+
+      fetchShopProducts();
+    });
+  </script>
+</body>
+</html>

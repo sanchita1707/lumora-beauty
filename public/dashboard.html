@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account | LUMORA BEAUTY</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+  <!-- --- HEADER NAVIGATION --- -->
+  <header>
+    <div class="header-container">
+      <a href="index.html" class="logo">LUMORA <span>BEAUTY</span></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop All</a>
+        <a href="shop.html?category=makeup">Makeup</a>
+        <a href="shop.html?category=skincare">Skincare</a>
+        <a href="shop.html?category=fragrance">Fragrance</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="shop.html" class="action-icon" title="Search"><i class="fas fa-search"></i></a>
+        <a href="wishlist.html" class="action-icon" title="Wishlist">
+          <i class="far fa-heart"></i>
+          <span class="badge-count wishlist-badge-count">0</span>
+        </a>
+        <a href="#" class="action-icon" id="header-cart-icon" title="Shopping Bag"><i class="fas fa-shopping-bag"></i></a>
+        <a href="auth.html" class="action-icon active" id="header-user-link" title="My Account"><i class="far fa-user"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- --- DASHBOARD CORE --- -->
+  <main class="dashboard-container">
+    
+    <!-- Left Sidebar -->
+    <aside class="dash-sidebar">
+      <div class="dash-user-card">
+        <div class="dash-avatar" id="user-avatar-initials">U</div>
+        <h4 class="dash-username" id="user-display-name">Guest User</h4>
+        <p class="dash-useremail" id="user-display-email">guest@example.com</p>
+      </div>
+
+      <nav class="dash-nav">
+        <div class="dash-nav-item active" data-pane="pane-profile" onclick="switchPane('pane-profile', this)">
+          <i class="far fa-user-circle"></i> Profile Details
+        </div>
+        <div class="dash-nav-item" data-pane="pane-orders" onclick="switchPane('pane-orders', this)">
+          <i class="fas fa-box"></i> My Orders
+        </div>
+        <div class="dash-nav-item" data-pane="pane-addresses" onclick="switchPane('pane-addresses', this)">
+          <i class="far fa-address-card"></i> Saved Addresses
+        </div>
+        <div class="dash-nav-item" style="color:var(--error-red); margin-top:2rem; border-top:1px solid var(--border-grey);" onclick="handleUserLogout()">
+          <i class="fas fa-sign-out-alt"></i> Sign Out
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Right Content Pane -->
+    <div>
+      
+      <!-- Profile Pane -->
+      <section class="dash-content-pane active" id="pane-profile">
+        <h3 class="pane-title">Account Information</h3>
+        <div class="dash-form">
+          <div class="form-group-dash">
+            <label>Full Name</label>
+            <input type="text" id="profile-name" placeholder="Your Name">
+          </div>
+          <div class="form-group-dash">
+            <label>Phone Number</label>
+            <input type="text" id="profile-phone" placeholder="9876543210">
+          </div>
+          <div class="form-group-dash dash-form-full">
+            <label>Email Address</label>
+            <input type="email" id="profile-email" placeholder="email@example.com" readonly style="background:#f0f0f0; cursor:not-allowed;">
+          </div>
+          
+          <h4 class="pane-title dash-form-full" style="font-size:1.4rem; margin-top:1.5rem; margin-bottom:1rem;">Change Password</h4>
+          <div class="form-group-dash dash-form-full">
+            <label>New Password</label>
+            <input type="password" id="profile-new-password" placeholder="Leave blank to keep current password">
+          </div>
+
+          <button class="btn btn-primary" style="font-size:0.75rem; margin-top:1rem;" onclick="updateProfileDetails()">Update Account</button>
+        </div>
+      </section>
+
+      <!-- Orders Pane -->
+      <section class="dash-content-pane" id="pane-orders">
+        <h3 class="pane-title">Order History</h3>
+        <div class="orders-list-dash" id="user-orders-list">
+          <!-- Loaded dynamically -->
+        </div>
+
+        <!-- Single Order Detail Panel (Order tracking detail overlay) -->
+        <div id="order-tracking-detail-panel" style="display:none; margin-top:3rem; border-top:2px solid var(--primary-rose-gold); padding-top:2.5rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+            <h4 style="font-family:var(--font-serif); font-size:1.6rem; color:var(--luxury-black);" id="tracking-order-title">Order #00000</h4>
+            <button class="btn btn-outline" style="font-size:0.7rem; padding:0.4rem 0.8rem;" onclick="hideTrackingPanel()">Back to History</button>
+          </div>
+
+          <!-- Order details grid -->
+          <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem;">
+            <!-- Left: Tracking History Timeline -->
+            <div class="tracking-timeline-container">
+              <h5 style="font-family:var(--font-serif); font-size:1.2rem; margin-bottom:1.5rem; text-transform:uppercase;">Shipment Tracking Timeline</h5>
+              <div class="tracking-timeline" id="tracking-history-timeline">
+                <!-- Timeline items -->
+              </div>
+            </div>
+
+            <!-- Right: Order Invoice Details -->
+            <div class="card-luxury" style="height:fit-content;">
+              <h5 style="font-family:var(--font-serif); font-size:1.2rem; margin-bottom:1rem; text-transform:uppercase;">Delivery Details</h5>
+              <p style="font-size:0.85rem; color:var(--text-grey); margin-bottom:1.5rem; line-height:1.6;" id="tracking-shipping-address">Shipping Address</p>
+              
+              <h5 style="font-family:var(--font-serif); font-size:1.2rem; margin-bottom:1rem; text-transform:uppercase;">Order Items</h5>
+              <div id="tracking-items-list" style="display:flex; flex-direction:column; gap:1rem; margin-bottom:1.5rem;">
+                <!-- items list -->
+              </div>
+
+              <div style="border-top:1px solid var(--border-grey); padding-top:1rem; font-size:0.95rem; font-weight:600; display:flex; justify-content:space-between;">
+                <span>Total Paid</span>
+                <span id="tracking-payable-total">₹0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Addresses Pane -->
+      <section class="dash-content-pane" id="pane-addresses">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; border-bottom: 1px solid var(--border-grey); padding-bottom:1rem;">
+          <h3 class="pane-title" style="border-bottom:none; margin-bottom:0; padding-bottom:0;">Saved Addresses</h3>
+          <button class="btn btn-primary" id="btn-add-address-dash" style="font-size:0.75rem;" onclick="toggleDashAddressForm()">+ Add New</button>
+        </div>
+
+        <!-- Add Address Form -->
+        <div class="dash-form card-luxury" id="dash-address-form" style="display:none; margin-bottom:2.5rem; border-color:var(--primary-rose-gold);">
+          <h4 style="font-family:var(--font-serif); font-size:1.3rem;" class="dash-form-full">New Address</h4>
+          <div class="form-group-dash dash-form-full">
+            <label>Street Address</label>
+            <input type="text" id="dash-street" placeholder="Flat No., Street Address">
+          </div>
+          <div class="form-group-dash">
+            <label>City</label>
+            <input type="text" id="dash-city" placeholder="Mumbai">
+          </div>
+          <div class="form-group-dash">
+            <label>State</label>
+            <input type="text" id="dash-state" placeholder="Maharashtra">
+          </div>
+          <div class="form-group-dash">
+            <label>Postal Code (PIN)</label>
+            <input type="text" id="dash-pin" placeholder="400001">
+          </div>
+          <div class="form-group-dash">
+            <label>Country</label>
+            <input type="text" id="dash-country" value="India" readonly>
+          </div>
+          <button class="btn btn-primary dash-form-full" style="font-size:0.75rem;" onclick="saveDashAddress()">Save Address</button>
+        </div>
+
+        <!-- Saved Addresses list -->
+        <div class="address-grid-dash" id="user-addresses-grid">
+          <!-- Dynamically loaded addresses -->
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- --- FOOTER --- -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="index.html" class="logo" style="margin-bottom:1.5rem; display:block;">
+          LUMORA <span>BEAUTY</span>
+        </a>
+        <p>A premium curation of botanical skincare, rich silk makeup, organic hair oils, and oriental perfumes designed to elevate your everyday beauty rituals into royal experiences.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- --- CART SLIDE PANEL --- -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <div class="cart-panel" id="cart-panel">
+    <div class="cart-header">
+      <h3>Your Bag</h3>
+      <button class="cart-close-btn" id="cart-close-btn"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items-wrapper" id="cart-drawer-items">
+      <!-- Dynamic list -->
+    </div>
+    <div class="cart-footer">
+      <div class="cart-summary-row">
+        <span>Subtotal</span>
+        <span id="cart-drawer-subtotal">₹0</span>
+      </div>
+      <div class="cart-total-row">
+        <span>Total Payable</span>
+        <span id="cart-drawer-total">₹0</span>
+      </div>
+      <a href="checkout.html" class="btn btn-gold cart-checkout-btn">Proceed To Checkout</a>
+    </div>
+  </div>
+
+  <!-- --- JAVASCRIPT --- -->
+  <script src="js/main.js"></script>
+  <script>
+    // Guard route
+    if (!getAuthUser()) {
+      window.location.href = '/auth.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadUserProfileData();
+      loadUserOrders();
+      loadUserSavedAddresses();
+    });
+
+    // --- TAB NAV PANE CONTROLS ---
+    const switchPane = (paneId, element) => {
+      document.querySelectorAll('.dash-nav-item').forEach(nav => nav.classList.remove('active'));
+      element.classList.add('active');
+
+      document.querySelectorAll('.dash-content-pane').forEach(pane => pane.classList.remove('active'));
+      document.getElementById(paneId).classList.add('active');
+      
+      // Hide tracking panel if switching tabs
+      hideTrackingPanel();
+    };
+
+    // --- LOAD PROFILE DETAILS ---
+    const loadUserProfileData = async () => {
+      try {
+        const res = await apiFetch('/auth/profile');
+        if (res.success) {
+          // Display
+          document.getElementById('user-display-name').textContent = res.name;
+          document.getElementById('user-display-email').textContent = res.email;
+          
+          // Set Avatar initials
+          const initials = res.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+          document.getElementById('user-avatar-initials').textContent = initials;
+
+          // Form
+          document.getElementById('profile-name').value = res.name;
+          document.getElementById('profile-phone').value = res.phone || '';
+          document.getElementById('profile-email').value = res.email;
+        }
+      } catch (e) {
+        showToast('Failed to load profile details', 'error');
+      }
+    };
+
+    const updateProfileDetails = async () => {
+      const name = document.getElementById('profile-name').value.trim();
+      const phone = document.getElementById('profile-phone').value.trim();
+      const password = document.getElementById('profile-new-password').value;
+
+      if (!name) {
+        showToast('Name is required', 'warning');
+        return;
+      }
+
+      const payload = { name, phone };
+      if (password) {
+        payload.password = password;
+      }
+
+      try {
+        const res = await apiFetch('/auth/profile', {
+          method: 'PUT',
+          body: JSON.stringify(payload)
+        });
+
+        if (res.success) {
+          showToast('Account profile updated successfully', 'success');
+          document.getElementById('profile-new-password').value = '';
+          
+          // Update credentials in local storage
+          const activeUser = getAuthUser();
+          activeUser.name = name;
+          activeUser.phone = phone;
+          localStorage.setItem('lumora_user', JSON.stringify(activeUser));
+          
+          // Reload
+          loadUserProfileData();
+        } else {
+          showToast(res.message, 'error');
+        }
+      } catch (e) {
+        showToast('Failed to update profile details', 'error');
+      }
+    };
+
+    // --- LOAD SAVED ADDRESSES ---
+    const loadUserSavedAddresses = async () => {
+      try {
+        const res = await apiFetch('/auth/profile');
+        if (res.success) {
+          const grid = document.getElementById('user-addresses-grid');
+          if (res.addresses.length === 0) {
+            grid.innerHTML = `<p style="grid-column: span 2; color:#888;">No saved addresses. Click '+ Add New' to save a shipping address.</p>`;
+            return;
+          }
+
+          grid.innerHTML = res.addresses.map(addr => `
+            <div class="address-card-dash ${addr.isDefault ? 'default' : ''}">
+              ${addr.isDefault ? `<span class="address-badge-default">Default</span>` : ''}
+              <div class="address-street">${addr.street}</div>
+              <div class="address-city-state">${addr.city}, ${addr.state} - ${addr.postalCode}</div>
+              <div class="address-city-state">${addr.country}</div>
+              <button class="address-delete-btn" onclick="deleteSavedAddress('${addr._id}')">Delete</button>
+            </div>
+          `).join('');
+        }
+      } catch (e) {
+        showToast('Failed to load saved addresses', 'error');
+      }
+    };
+
+    const toggleDashAddressForm = () => {
+      const form = document.getElementById('dash-address-form');
+      const btn = document.getElementById('btn-add-address-dash');
+      if (form.style.display === 'none') {
+        form.style.display = 'grid';
+        btn.textContent = 'Cancel';
+      } else {
+        form.style.display = 'none';
+        btn.textContent = '+ Add New';
+      }
+    };
+
+    const saveDashAddress = async () => {
+      const street = document.getElementById('dash-street').value.trim();
+      const city = document.getElementById('dash-city').value.trim();
+      const state = document.getElementById('dash-state').value.trim();
+      const postalCode = document.getElementById('dash-pin').value.trim();
+      const country = document.getElementById('dash-country').value.trim();
+
+      if (!street || !city || !state || !postalCode) {
+        showToast('Please fill all fields', 'warning');
+        return;
+      }
+
+      try {
+        const res = await apiFetch('/auth/address', {
+          method: 'POST',
+          body: JSON.stringify({ street, city, state, postalCode, country })
+        });
+
+        if (res.success) {
+          showToast('Address saved successfully', 'success');
+          // Clear
+          document.getElementById('dash-street').value = '';
+          document.getElementById('dash-city').value = '';
+          document.getElementById('dash-state').value = '';
+          document.getElementById('dash-pin').value = '';
+
+          // Close form
+          toggleDashAddressForm();
+          // Reload
+          loadUserSavedAddresses();
+        }
+      } catch (e) {
+        showToast('Failed to save address', 'error');
+      }
+    };
+
+    const deleteSavedAddress = async (addrId) => {
+      if (!confirm('Are you sure you want to delete this address?')) return;
+      try {
+        const res = await apiFetch(`/auth/address/${addrId}`, {
+          method: 'DELETE'
+        });
+        if (res.success) {
+          showToast('Address deleted successfully', 'success');
+          loadUserSavedAddresses();
+        }
+      } catch (e) {
+        showToast('Failed to delete address', 'error');
+      }
+    };
+
+    // --- LOAD ORDERS ---
+    const loadUserOrders = async () => {
+      try {
+        const res = await apiFetch('/orders/myorders');
+        if (res.success) {
+          const list = document.getElementById('user-orders-list');
+          if (res.data.length === 0) {
+            list.innerHTML = `<p style="color:#888; text-align:center; padding:3rem 0;">You have not placed any orders yet.</p>`;
+            return;
+          }
+
+          list.innerHTML = res.data.map(order => `
+            <div class="order-row-dash" id="order-row-${order._id}">
+              <div class="order-header-dash">
+                <div class="order-header-info">
+                  <div>
+                    <div class="info-label">Order Placed</div>
+                    <div class="info-val">${new Date(order.createdAt).toLocaleDateString()}</div>
+                  </div>
+                  <div>
+                    <div class="info-label">Total Amount</div>
+                    <div class="info-val">₹${order.payableAmount}</div>
+                  </div>
+                  <div>
+                    <div class="info-label">Order ID</div>
+                    <div class="info-val">${order._id.substring(0, 10).toUpperCase()}...</div>
+                  </div>
+                </div>
+                <span class="order-status-badge ${order.status.toLowerCase()}">${order.status}</span>
+              </div>
+
+              <div class="order-body-dash">
+                <div class="order-items-summary">
+                  <img src="${order.items[0].image}" class="summary-img" alt="${order.items[0].name}">
+                  <div class="summary-details">
+                    <div class="summary-details-name">${order.items[0].name}</div>
+                    <div class="summary-details-qty">and ${order.items.length - 1} other item(s) &bull; Qty: ${order.items[0].quantity}</div>
+                  </div>
+                </div>
+
+                <div style="display:flex; gap:0.8rem;">
+                  <button class="btn btn-outline" style="font-size:0.75rem; padding:0.5rem 1rem;" onclick="trackOrderDetails('${order._id}')">Track Order</button>
+                  ${(order.status === 'Pending' || order.status === 'Processing') ? `
+                    <button class="btn btn-outline btn-danger-admin" style="font-size:0.75rem; padding:0.5rem 1rem; border-color:var(--error-red); color:var(--error-red);" 
+                      onclick="cancelUserOrder('${order._id}')">Cancel Order</button>
+                  ` : ''}
+                </div>
+              </div>
+            </div>
+          `).join('');
+        }
+      } catch (e) {
+        showToast('Failed to load orders history', 'error');
+      }
+    };
+
+    // --- TRACK ORDER TIMELINE DETAILS ---
+    const trackOrderDetails = async (orderId) => {
+      try {
+        const res = await apiFetch(`/orders/${orderId}`);
+        if (res.success) {
+          const order = res.data;
+          
+          // Display details
+          document.getElementById('tracking-order-title').textContent = `Order Details #${order._id.toUpperCase()}`;
+          document.getElementById('tracking-shipping-address').innerHTML = `
+            <strong>Deliver to:</strong><br>
+            ${order.shippingAddress.street}<br>
+            ${order.shippingAddress.city}, ${order.shippingAddress.state} - ${order.shippingAddress.postalCode}<br>
+            ${order.shippingAddress.country}<br>
+            <strong>Payment Method:</strong> ${order.paymentMethod} &nbsp;|&nbsp; <strong>Status:</strong> ${order.paymentStatus}
+          `;
+
+          // Render items
+          const itemsList = document.getElementById('tracking-items-list');
+          itemsList.innerHTML = order.items.map(item => `
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.85rem;">
+              <span>${item.name} x ${item.quantity}</span>
+              <span>₹${item.price * item.quantity}</span>
+            </div>
+          `).join('');
+
+          document.getElementById('tracking-payable-total').textContent = `₹${order.payableAmount}`;
+
+          // RENDER TIMELINE HISTORIC STEPS (Order tracking timeline)
+          const timeline = document.getElementById('tracking-history-timeline');
+          timeline.innerHTML = order.trackingHistory.map((step, idx) => {
+            const isActive = idx === order.trackingHistory.length - 1;
+            return `
+              <div class="timeline-step ${isActive ? 'active' : ''}">
+                <div class="timeline-marker">
+                  ${isActive ? '<i class="fas fa-dot-circle" style="color:var(--luxury-black);"></i>' : '<i class="fas fa-check" style="color:var(--primary-rose-gold);"></i>'}
+                </div>
+                <div class="timeline-content">
+                  <h6 class="timeline-status">${step.status}</h6>
+                  <span class="timeline-date">${new Date(step.date).toLocaleString()}</span>
+                  <p class="timeline-desc">${step.description}</p>
+                </div>
+              </div>
+            `;
+          }).reverse().join(''); // Show latest on top
+
+          // Hide list, show tracking panel
+          document.getElementById('user-orders-list').style.display = 'none';
+          document.getElementById('order-tracking-detail-panel').style.display = 'block';
+          window.scrollTo({ top: document.getElementById('order-tracking-detail-panel').offsetTop - 100, behavior: 'smooth' });
+        }
+      } catch (e) {
+        showToast('Failed to retrieve tracking details', 'error');
+      }
+    };
+
+    const hideTrackingPanel = () => {
+      document.getElementById('order-tracking-detail-panel').style.display = 'none';
+      document.getElementById('user-orders-list').style.display = 'flex';
+    };
+
+    const cancelUserOrder = async (orderId) => {
+      if (!confirm('Are you sure you want to cancel this order?')) return;
+      try {
+        const res = await apiFetch(`/orders/${orderId}/cancel`, {
+          method: 'PUT'
+        });
+        if (res.success) {
+          showToast('Order cancelled successfully', 'success');
+          loadUserOrders();
+        } else {
+          showToast(res.message, 'error');
+        }
+      } catch (e) {
+        showToast('Failed to cancel order', 'error');
+      }
+    };
+
+    const handleUserLogout = () => {
+      clearAuthState();
+      showToast('Logged out successfully', 'info');
+      setTimeout(() => {
+        window.location.href = '/index.html';
+      }, 1200);
+    };
+  </script>
+</body>
+</html>

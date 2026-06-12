@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Wishlist | LUMORA BEAUTY</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- --- HEADER NAVIGATION --- -->
+  <header>
+    <div class="header-container">
+      <a href="index.html" class="logo">LUMORA <span>BEAUTY</span></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop All</a>
+        <a href="shop.html?category=makeup">Makeup</a>
+        <a href="shop.html?category=skincare">Skincare</a>
+        <a href="shop.html?category=fragrance">Fragrance</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="shop.html" class="action-icon" title="Search"><i class="fas fa-search"></i></a>
+        <a href="wishlist.html" class="action-icon active" title="Wishlist">
+          <i class="far fa-heart"></i>
+          <span class="badge-count wishlist-badge-count">0</span>
+        </a>
+        <a href="#" class="action-icon" id="header-cart-icon" title="Shopping Bag">
+          <i class="fas fa-shopping-bag"></i>
+          <span class="badge-count cart-badge-count">0</span>
+        </a>
+        <a href="auth.html" class="action-icon" id="header-user-link" title="My Account"><i class="far fa-user"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- --- WISHLIST CONTAINER --- -->
+  <main class="products-section" style="margin-top: calc(var(--header-height) + 3rem); min-height: 60vh;">
+    <h2 class="section-title">My Wishlist</h2>
+    
+    <div class="products-grid" id="wishlist-products-grid">
+      <!-- Loaded dynamically -->
+      <div style="grid-column: span 4; text-align:center; padding:5rem 0;">
+        <i class="fas fa-spinner fa-spin" style="font-size:3rem; color:var(--primary-rose-gold);"></i>
+      </div>
+    </div>
+  </main>
+
+  <!-- --- FOOTER --- -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="index.html" class="logo" style="margin-bottom:1.5rem; display:block;">
+          LUMORA <span>BEAUTY</span>
+        </a>
+        <p>A premium curation of botanical skincare, rich silk makeup, organic hair oils, and oriental perfumes designed to elevate your everyday beauty rituals into royal experiences.</p>
+        <div class="footer-socials">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-pinterest-p"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <h4>Discover</h4>
+        <ul>
+          <li><a href="shop.html">Shop All Products</a></li>
+          <li><a href="shop.html?category=makeup">Makeup Palettes</a></li>
+          <li><a href="shop.html?category=skincare">Skincare Serums</a></li>
+          <li><a href="shop.html?category=fragrance">Luxury Scents</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links">
+        <h4>Customer Care</h4>
+        <ul>
+          <li><a href="dashboard.html">Order Tracking</a></li>
+          <li><a href="wishlist.html">My Wishlist</a></li>
+          <li><a href="#">Shipping Policy</a></li>
+          <li><a href="#">Returns & Exchanges</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-newsletter">
+        <h4>Newsletter</h4>
+        <p>Subscribe to receive luxury launch updates, private sales, and beauty tutorials.</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Your Email Address" required>
+          <button type="submit">Subscribe</button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 LUMORA BEAUTY. All Rights Reserved.</p>
+      <div>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- --- CART SLIDE PANEL --- -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <div class="cart-panel" id="cart-panel">
+    <div class="cart-header">
+      <h3>Your Bag</h3>
+      <button class="cart-close-btn" id="cart-close-btn"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items-wrapper" id="cart-drawer-items">
+      <!-- Dynamic list -->
+    </div>
+    <div class="cart-footer">
+      <div class="cart-summary-row">
+        <span>Subtotal</span>
+        <span id="cart-drawer-subtotal">₹0</span>
+      </div>
+      <div class="cart-total-row">
+        <span>Total Payable</span>
+        <span id="cart-drawer-total">₹0</span>
+      </div>
+      <a href="checkout.html" class="btn btn-gold cart-checkout-btn">Proceed To Checkout</a>
+    </div>
+  </div>
+
+  <!-- --- JAVASCRIPT --- -->
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await renderWishlist();
+    });
+
+    const renderWishlist = async () => {
+      const grid = document.getElementById('wishlist-products-grid');
+      const savedIds = JSON.parse(localStorage.getItem('lumora_wishlist') || '[]');
+
+      if (savedIds.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: span 4; text-align:center; padding:5rem 0; color:#888;">
+            <i class="far fa-heart" style="font-size:4rem; color:#d6c3c3; margin-bottom:1rem;"></i>
+            <p style="font-family:var(--font-serif); font-size:1.5rem;">Your wishlist is empty</p>
+            <p style="font-size:0.9rem; margin-top:0.5rem; margin-bottom:2rem;">Add items you love to save them here.</p>
+            <a href="shop.html" class="btn btn-primary" style="font-size:0.75rem;">Discover Collections</a>
+          </div>
+        `;
+        return;
+      }
+
+      try {
+        const promises = savedIds.map(id => apiFetch(`/products/${id}`));
+        const results = await Promise.all(promises);
+        const products = results.filter(r => r.success).map(r => r.data);
+
+        if (products.length === 0) {
+          grid.innerHTML = `<p style="grid-column: span 4; text-align:center; color:#888;">No items found.</p>`;
+          return;
+        }
+
+        grid.innerHTML = products.map(prod => {
+          const originalPrice = prod.price;
+          const discount = prod.discount || 0;
+          const currentPrice = Math.round(originalPrice * (1 - discount / 100));
+
+          return `
+            <div class="product-card">
+              <button class="product-fav-btn active" onclick="event.preventDefault(); removeItem('${prod._id}')">
+                <i class="fas fa-times" style="font-size:1.1rem;"></i>
+              </button>
+              
+              <a href="product.html?id=${prod._id}" class="product-img-wrapper">
+                <img src="${prod.images[0]}" alt="${prod.name}" class="product-img-primary">
+                <img src="${prod.images[1] || prod.images[0]}" alt="${prod.name}" class="product-img-secondary">
+              </a>
+              
+              <div class="product-details">
+                <span class="product-category">${prod.brand}</span>
+                <h3 class="product-name"><a href="product.html?id=${prod._id}">${prod.name}</a></h3>
+                
+                <div class="product-price-row">
+                  <span class="price-current">₹${currentPrice}</span>
+                  ${discount > 0 ? `<span class="price-original">₹${originalPrice}</span>` : ''}
+                </div>
+                
+                <button class="btn btn-primary" style="margin-top:1.5rem; width:100%; font-size:0.75rem;" 
+                  onclick="event.preventDefault(); handleAddToCart('${encodeURIComponent(JSON.stringify(prod))}')">
+                  Add To Bag
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (error) {
+        grid.innerHTML = `<p style="grid-column: span 4; text-align:center; color:red;">Failed to load wishlist items.</p>`;
+      }
+    };
+
+    const handleAddToCart = (encodedProduct) => {
+      const product = JSON.parse(decodeURIComponent(encodedProduct));
+      addToCart(product, 1);
+    };
+
+    const removeItem = (prodId) => {
+      toggleWishlist({ _id: prodId });
+      renderWishlist();
+    };
+  </script>
+</body>
+</html>
